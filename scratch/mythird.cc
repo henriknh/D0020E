@@ -23,6 +23,8 @@
 #include "ns3/csma-module.h"
 #include "ns3/internet-module.h"
 
+//Testar en kommentar här
+
 // Default Network Topology
 //
 // Number of wifi or csma nodes can be increased up to 250
@@ -49,7 +51,7 @@ main (int argc, char *argv[])
   uint32_t nCsma = 3;
   uint32_t nWifi = 3;
   bool tracing = false;
-
+  std::cout << "Hej Leif";
   CommandLine cmd;
   cmd.AddValue ("nCsma", "Number of \"extra\" CSMA nodes/devices", nCsma);
   cmd.AddValue ("nWifi", "Number of wifi STA devices", nWifi);
