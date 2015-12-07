@@ -1,17 +1,19 @@
 NS-3 MineExtension
 ==============
 
-Install 
+#Git commands
+##Install 
 
-Gå till ns-3 mappen
+cd into the ns-3 folder
+```
 git init
 git remote add origin https://github.com/henriknh/D0020E.git
 git pull origin master
+```
 
 
-
-Force update
-
+##Force update
+```
 git reset --hard origin/master
 git pull
-
+```
