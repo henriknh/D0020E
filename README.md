@@ -21,7 +21,7 @@ git pull
 ###Commit files
 
 ```
-git commit -a -m <describe what was changed>
+git commit -a -m "<describe what was changed>"
 git push origin master
 ```
 Sign in and the repository should be updated!
