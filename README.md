@@ -20,13 +20,8 @@ git pull
 
 ###Commit files
 
-Add files with 
 ```
-git add <filename>
-git commit
-```
-Describe what was changed during this commit
-```
+git commit -a -m <describe what was changed>
 git push origin master
 ```
-Sign in and your files should be uploaded!
+Sign in and the repository should be updated!
