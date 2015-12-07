@@ -1,8 +1,8 @@
 NS-3 MineExtension
 ==============
 
-#Git commands
-##Install 
+##Git commands
+###Install 
 
 cd into the ns-3 folder
 ```
@@ -12,8 +12,16 @@ git pull origin master
 ```
 
 
-##Force update
+###Force update
 ```
 git reset --hard origin/master
 git pull
 ```
+
+###Commit files
+
+Add files with `git add <filename>`
+`git commit`
+Describe what was changed during this commit
+`git push origin master`
+Sign in and your files should be uploaded!
