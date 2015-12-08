@@ -1,6 +1,13 @@
 NS-3 MineExtension
 ==============
 
+##Installing
++	Download the zip file provided in the root of this directory.
++	Run it in the terminal (sudo privileges required)
+```
+sudo ./install-ns3
+```
+
 ##Git commands
 ###Install 
 
