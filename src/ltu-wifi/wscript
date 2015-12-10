@@ -10,6 +10,7 @@ def build(bld):
     module = bld.create_ns3_module('ltu-wifi', ['core'])
     module.source = [
         'model/ltu-wifi.cc',
+        'model/wifi-access-point.cc',
         'helper/ltu-wifi-helper.cc',
         ]
 
@@ -22,6 +23,7 @@ def build(bld):
     headers.module = 'ltu-wifi'
     headers.source = [
         'model/ltu-wifi.h',
+        'model/wifi-access-point.h',
         'helper/ltu-wifi-helper.h',
         ]
 

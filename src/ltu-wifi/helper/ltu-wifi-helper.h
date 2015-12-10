@@ -12,8 +12,8 @@ class LtuWifiHelper {
 public:
     ~LtuWifiHelper ();//Destructor
 
-    NodeContainer CreateAccessPoint(std::string ssid, int x, int y, int z);
-    NodeContainer CreateClient(int x, int y, int z);
+    NodeContainer CreateAccessPoint(std::string ssid, double x, double y, double z);
+    NodeContainer CreateClient(double x, double y, double z);
     void ConnectClientToWirelessNetwork(NodeContainer client, std::string ssid);
 };
 

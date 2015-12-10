@@ -71,6 +71,7 @@ main (int argc, char *argv[])
 
   if (verbose)
     {
+      LogComponentEnable ("ThirdScriptExample", LOG_LEVEL_INFO);
       LogComponentEnable ("UdpEchoClientApplication", LOG_LEVEL_INFO);
       LogComponentEnable ("UdpEchoServerApplication", LOG_LEVEL_INFO);
     }
@@ -166,12 +167,16 @@ main (int argc, char *argv[])
   serverApps.Stop (Seconds (10.0));
 
   UdpEchoClientHelper echoClient (csmaInterfaces.GetAddress (nCsma), 9);
+
+  NS_LOG_INFO("ServerAddress: " << csmaInterfaces.GetAddress (nCsma));
+  NS_LOG_INFO("ClientAddress: " << csmaInterfaces.GetAddress (1));
+
   echoClient.SetAttribute ("MaxPackets", UintegerValue (1));
   echoClient.SetAttribute ("Interval", TimeValue (Seconds (1.0)));
   echoClient.SetAttribute ("PacketSize", UintegerValue (1024));
 
   ApplicationContainer clientApps = 
-    echoClient.Install (wifiStaNodes.Get (nWifi - 1));
+    echoClient.Install (csmaNodes.Get (1));
   clientApps.Start (Seconds (2.0));
   clientApps.Stop (Seconds (10.0));
 
