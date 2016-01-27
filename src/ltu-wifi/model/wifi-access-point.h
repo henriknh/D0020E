@@ -2,30 +2,25 @@
 #ifndef WIFI_ACCESS_POINT_H
 #define WIFI_ACCESS_POINT_H
 
-#include <string>
 #include "ns3/node-container.h"
+#include "wired-connection.h"
+#include "wired-connection-container.h"
+#include "ns3/wifi-module.h"
 #include "ns3/internet-module.h"
-#include "ns3/ipv4-address.h"
 
 namespace ns3 {
 
-class WifiAccessPoint {
+class WifiAccessPoint : public SimpleRefCount<WifiAccessPoint> {
 public:
-    WifiAccessPoint(double x, double y, double z, std::string ssid, std::string ipAddressWireless, std::string netmaskWireless, std::string ipAddressWired, std::string netmaskWired, std::string ipAddressInternal, std::string netmaskInternal);
-    ~WifiAccessPoint();
-    void ConnectWired(NodeContainer nodeToConnect);
-    NodeContainer GetAllNodes();
-    Ipv4Address GetWiredIpAddress(int index);
+    WifiAccessPoint(double x, double y, double z, InternetStackHelper stack);
+    void ConnectWired(Ptr<WifiAccessPoint> ap);
+    void ConnectWired(Ptr<Node>);
+    void Install(Ssid *ssid, Ptr<YansWifiChannel> channel, Ipv4AddressHelper *ip);
 
 protected:
-    NodeContainer apNode;
-    NodeContainer p2pNodes;
-    NodeContainer wiredNodes;
-    Ipv4AddressHelper wiredAddress;
-    Ipv4AddressHelper wirelessAddress;
-    Ipv4InterfaceContainer wiredInterfaces;
+    WiredConnectionContainer wiredConnections;
+    NodeContainer node;
 };
-
 }
 
 #endif /* WIFI_ACCESS_POINT_H */
