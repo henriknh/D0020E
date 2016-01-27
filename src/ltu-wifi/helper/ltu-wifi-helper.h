@@ -4,17 +4,28 @@
 
 #include "ns3/ltu-wifi.h"
 #include "ns3/node-container.h"
+#include "ns3/wifi-module.h"
+#include "ns3/wifi-access-point.h"
+#include "ns3/wifi-access-point-container.h"
 #include <string>
 
 namespace ns3 {
 
 class LtuWifiHelper {
 public:
+    LtuWifiHelper();
     ~LtuWifiHelper ();//Destructor
 
-    NodeContainer CreateAccessPoint(std::string ssid, double x, double y, double z);
+    void SetSsid(std::string ssid);
+    Ptr<WifiAccessPoint> CreateAccessPoint(double x, double y, double z);
     NodeContainer CreateClient(double x, double y, double z);
-    void ConnectClientToWirelessNetwork(NodeContainer client, std::string ssid);
+    void InstallAll();
+
+protected:
+    Ssid ssid;
+    NodeContainer clients;
+    WifiAccessPointContainer accessPoints;
+    InternetStackHelper stack;
 };
 
 }
