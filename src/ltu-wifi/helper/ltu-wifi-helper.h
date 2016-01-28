@@ -19,13 +19,20 @@ public:
     void SetSsid(std::string ssid);
     Ptr<WifiAccessPoint> CreateAccessPoint(double x, double y, double z);
     NodeContainer CreateClient(double x, double y, double z);
+    NodeContainer CreateClient(double x, double y, double z, double deltaX, double deltaY);
+    NodeContainer CreateClient(double x, double y, double z, double deltaX, double deltaY, double speed);
     void InstallAll();
+    Ptr<WifiAccessPoint> GetAP(int index);
+    Ipv4Address GetClientIP(int index);
+    Ipv4Address GetApIP(int index);
 
 protected:
     Ssid ssid;
     NodeContainer clients;
     WifiAccessPointContainer accessPoints;
     InternetStackHelper stack;
+    Ipv4InterfaceContainer clientIps;
+    Ipv4InterfaceContainer accessPointIps;
 };
 
 }

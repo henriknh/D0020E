@@ -41,7 +41,7 @@ WifiAccessPoint::ConnectWired(Ptr<WifiAccessPoint> ap) {
     ap->wiredConnections.Add(connPtr);
 }
 
-void
+Ipv4InterfaceContainer
 WifiAccessPoint::Install(Ssid *ssid, Ptr<YansWifiChannel> channel, Ipv4AddressHelper *ip) {
     //Install WiFi
     YansWifiPhyHelper wifiPhy = YansWifiPhyHelper::Default ();
@@ -69,7 +69,7 @@ WifiAccessPoint::Install(Ssid *ssid, Ptr<YansWifiChannel> channel, Ipv4AddressHe
     
     BridgeHelper bridge;
     NetDeviceContainer bridgeDevice = bridge.Install(this->node.Get(0), bridgeDevices);
-    ip->Assign(bridgeDevice);//IP is only set on the bridge, not the other interfaces
+    return ip->Assign(bridgeDevice);//IP is only set on the bridge, not the other interfaces
 }
 
 }

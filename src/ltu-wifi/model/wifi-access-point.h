@@ -15,7 +15,7 @@ public:
     WifiAccessPoint(double x, double y, double z, InternetStackHelper stack);
     void ConnectWired(Ptr<WifiAccessPoint> ap);
     void ConnectWired(Ptr<Node>);
-    void Install(Ssid *ssid, Ptr<YansWifiChannel> channel, Ipv4AddressHelper *ip);
+    Ipv4InterfaceContainer Install(Ssid *ssid, Ptr<YansWifiChannel> channel, Ipv4AddressHelper *ip);
 
 protected:
     WiredConnectionContainer wiredConnections;

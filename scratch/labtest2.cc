@@ -76,10 +76,10 @@ main (int argc, char *argv[])
   wifi.GetAP(2)->ConnectWired(wifi.GetAP(7));
   wifi.GetAP(7)->ConnectWired(wifi.GetAP(12));
 
-  NodeContainer wifiClients = wifi.CreateClient(225, 175, 0, 300, 300);
-  wifiClients.Add(wifi.CreateClient(25, 25, 0, 50, 50));
-  wifiClients.Add(wifi.CreateClient(100, 50, 0, 200, 150));
-  wifiClients.Add(wifi.CreateClient(200, 75, 100, 50, 100));
+  NodeContainer wifiClients = wifi.CreateClient(225, 175, 0, 300, 300, 20);
+  wifiClients.Add(wifi.CreateClient(25, 25, 0, 50, 50, 10));
+  wifiClients.Add(wifi.CreateClient(100, 50, 0, 200, 150, 35));
+  wifiClients.Add(wifi.CreateClient(200, 75, 100, 50, 100, 5));
   wifiClients.Add(wifi.CreateClient(200, 100, 0, 100, 100));
 
   wifi.InstallAll();
@@ -95,7 +95,7 @@ main (int argc, char *argv[])
   apps.Start (Seconds (0.5));
   apps.Stop (Seconds (300.0));
 
-  //AnimationInterface anim ("labtest2-animation.xml");
+  AnimationInterface anim ("labtest2-animation.xml");
 
   Simulator::Stop (Seconds (300.0));
   Simulator::Run ();

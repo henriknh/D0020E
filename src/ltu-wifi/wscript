@@ -11,7 +11,10 @@ def build(bld):
     module.source = [
         'model/ltu-wifi.cc',
         'model/wifi-access-point.cc',
-        'helper/ltu-wifi-helper.cc',
+        'model/wired-connection.cc',
+        'model/wired-connection-container.cc',
+        'model/wifi-access-point-container.cc',
+        'helper/ltu-wifi-helper.cc'
         ]
 
     module_test = bld.create_ns3_module_test_library('ltu-wifi')
@@ -24,7 +27,10 @@ def build(bld):
     headers.source = [
         'model/ltu-wifi.h',
         'model/wifi-access-point.h',
-        'helper/ltu-wifi-helper.h',
+        'model/wired-connection.h',
+        'model/wired-connection-container.h',
+        'model/wifi-access-point-container.h',
+        'helper/ltu-wifi-helper.h'
         ]
 
     if bld.env.ENABLE_EXAMPLES:
