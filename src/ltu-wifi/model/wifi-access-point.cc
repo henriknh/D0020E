@@ -59,10 +59,10 @@ WifiAccessPoint::Install(Ssid *ssid, Ptr<YansWifiChannel> channel, Ipv4AddressHe
         this->wiredConnections.Get(i)->Connect();
     }
 
-    //Install bridge
+    //Install bridge on all netdevices except LoopbackNetDevice (refer to bug #1487 in bugzilla)
     NetDeviceContainer bridgeDevices;
     int numberOfDevices = this->node.Get(0)->GetNDevices();
-    for(int i = 0; i < numberOfDevices; i++) {
+    for(int i = 1; i < numberOfDevices; i++) {//Loopback is at 0, therefore start at 1
         bridgeDevices.Add(this->node.Get(0)->GetDevice(i));
     }
     
