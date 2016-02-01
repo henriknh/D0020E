@@ -92,11 +92,11 @@ main (int argc, char *argv[])
   onoff.SetConstantRate (DataRate ("500kb/s"));
   ApplicationContainer apps = onoff.Install (wifiClients.Get(0));
   apps.Start (Seconds (0.5));
-  apps.Stop (Seconds (300.0));
+  //apps.Stop (Seconds (300.0));
 
   AnimationInterface anim ("labtest2-animation.xml");
 
-  Simulator::Stop (Seconds (300.0));
+  //Simulator::Stop (Seconds (300.0));
   Simulator::Run ();
   Simulator::Destroy ();
 
