@@ -18,6 +18,7 @@ public:
     void ConnectWired(NodeContainer nodesToConnect);
     Ipv4InterfaceContainer Install(Ssid *ssid, Ptr<YansWifiChannel> channel, Ipv4AddressHelper *ip);
     Ptr<MobilityModel> GetMobilityModel();
+    NodeContainer GetNode();
 
 protected:
     WiredConnectionContainer wiredConnections;

@@ -52,6 +52,11 @@ WifiAccessPoint::GetMobilityModel() {
     return this->node.Get(0)->GetObject<MobilityModel>();
 }
 
+NodeContainer
+WifiAccessPoint::GetNode() {
+    return this->node;
+}
+
 Ipv4InterfaceContainer
 WifiAccessPoint::Install(Ssid *ssid, Ptr<YansWifiChannel> channel, Ipv4AddressHelper *ip) {
     //Install WiFi
