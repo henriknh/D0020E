@@ -23,7 +23,8 @@ public:
     NodeContainer CreateClient(double x, double y, double z, double deltaX, double deltaY, double speed);
     void InstallAll();
     Ptr<WifiAccessPoint> GetAP(int index);
-    Ipv4Address GetClientIP(int index);
+    Ipv4Address GetWifiClientIP(int index);
+    Ipv4Address GetWiredClientIP(int index);
     Ipv4Address GetApIP(int index);
     NodeContainer CreateWiredClient(double x, double y, double z);
 
@@ -34,7 +35,8 @@ protected:
     NodeContainer wiredClients;
     WifiAccessPointContainer accessPoints;
     InternetStackHelper stack;
-    Ipv4InterfaceContainer clientIps;
+    Ipv4InterfaceContainer wifiClientIps;
+    Ipv4InterfaceContainer wiredClientIps;
     Ipv4InterfaceContainer accessPointIps;
 };
 

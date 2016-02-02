@@ -16,7 +16,7 @@ public:
     void Add (Ptr<WifiAccessPoint> ap);
 
 protected:
-    std::vector<Ptr<WifiAccessPoint> > m_aps; //!< Wired Connection smart pointers
+    std::vector<Ptr<WifiAccessPoint> > m_aps; //!< WifiAccessPoint smart pointers
 };
 
 }
