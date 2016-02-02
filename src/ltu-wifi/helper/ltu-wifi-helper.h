@@ -25,10 +25,13 @@ public:
     Ptr<WifiAccessPoint> GetAP(int index);
     Ipv4Address GetClientIP(int index);
     Ipv4Address GetApIP(int index);
+    NodeContainer CreateWiredClient(double x, double y, double z);
 
 protected:
     Ssid ssid;
     NodeContainer clients;
+    NodeContainer wifiClients;
+    NodeContainer wiredClients;
     WifiAccessPointContainer accessPoints;
     InternetStackHelper stack;
     Ipv4InterfaceContainer clientIps;

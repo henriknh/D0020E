@@ -84,6 +84,7 @@ LtuWifiHelper::CreateClient(double x, double y, double z, double deltaX, double 
     mobility.Install(client);
 
     this->clients.Add(client);
+    this->wifiClients.Add(client);
     return client;
 }
 
@@ -103,9 +104,9 @@ LtuWifiHelper::InstallAll() {
         this->accessPointIps.Add(this->accessPoints.Get(i)->Install(&this->ssid, channel, ip));
     }
 
-    //Install all clients
-    int numberOfClients = this->clients.GetN();
-    for(int i = 0; i < numberOfClients; i++) 
+    //Install all wifi clients
+    int numberOfWifiClients = this->wifiClients.GetN();
+    for(int i = 0; i < numberOfWifiClients; i++) 
     {
         YansWifiPhyHelper wifiPhy = YansWifiPhyHelper::Default ();
         wifiPhy.SetPcapDataLinkType (YansWifiPhyHelper::DLT_IEEE802_11_RADIO); 
@@ -116,11 +117,25 @@ LtuWifiHelper::InstallAll() {
                          "Ssid", SsidValue (this->ssid),
                          "ActiveProbing", BooleanValue (true));
         NetDeviceContainer stationDevice;
-        stationDevice = wifi.Install (wifiPhy, wifiMac, this->clients.Get(i));
+        stationDevice = wifi.Install (wifiPhy, wifiMac, this->wifiClients.Get(i));
         this->clientIps.Add(ip->Assign (stationDevice));
     }
+}
 
-    
+NodeContainer
+LtuWifiHelper::CreateWiredClient(double x, double y, double z) {
+    NodeContainer client;
+    client.Create(1);
+
+    this->stack.Install(client);
+    MobilityHelper mobility;
+    mobility.SetMobilityModel ("ns3::ConstantPositionMobilityModel");
+    mobility.Install(client);
+    (client.Get(0)->GetObject<ConstantPositionMobilityModel>())->SetPosition(Vector(x, y, z));
+
+    this->clients.Add(client);
+    this->wiredClients.Add(client);
+    return client;
 }
 
 Ptr<WifiAccessPoint>

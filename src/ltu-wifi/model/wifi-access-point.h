@@ -14,8 +14,10 @@ class WifiAccessPoint : public SimpleRefCount<WifiAccessPoint> {
 public:
     WifiAccessPoint(double x, double y, double z, InternetStackHelper stack);
     void ConnectWired(Ptr<WifiAccessPoint> ap);
-    void ConnectWired(Ptr<Node>);
+    void ConnectWired(Ptr<Node> nodeToConnect);
+    void ConnectWired(NodeContainer nodesToConnect);
     Ipv4InterfaceContainer Install(Ssid *ssid, Ptr<YansWifiChannel> channel, Ipv4AddressHelper *ip);
+    Ptr<MobilityModel> GetMobilityModel();
 
 protected:
     WiredConnectionContainer wiredConnections;

@@ -32,12 +32,24 @@ WifiAccessPoint::ConnectWired(Ptr<Node> nodeToConnect) {
     this->wiredConnections.Add(connPtr);
 }
 
+void WifiAccessPoint::ConnectWired(NodeContainer nodesToConnect) {
+    int size = nodesToConnect.GetN();
+    for(int i = 0; i < size; i++) {
+        ConnectWired(nodesToConnect.Get(i));
+    }
+}
+
 void
 WifiAccessPoint::ConnectWired(Ptr<WifiAccessPoint> ap) {
     WiredConnection *conn = new WiredConnection(this->node.Get(0), ap->node.Get(0));
     Ptr<WiredConnection> connPtr = Ptr<WiredConnection>(conn);
     this->wiredConnections.Add(connPtr);
     ap->wiredConnections.Add(connPtr);
+}
+
+Ptr<MobilityModel>
+WifiAccessPoint::GetMobilityModel() {
+    return this->node.Get(0)->GetObject<MobilityModel>();
 }
 
 Ipv4InterfaceContainer
