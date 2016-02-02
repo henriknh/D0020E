@@ -1,6 +1,6 @@
 /* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 
-#include <ns3/ltu-wall-helper.h>
+#include <ltu-wall-helper.h>
 #include <ns3/log.h>
 
 using namespace std;

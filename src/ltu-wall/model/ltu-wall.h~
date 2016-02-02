@@ -3,7 +3,7 @@
 #define LTU_WALL_H
 
 #include "ns3/buildings-propagation-loss-model.h"
-#include "ns3/hybrid-wall-propagation-loss-model.h"
+//#include "ns3/hybrid-wall-propagation-loss-model.h"
 
 namespace ns3 {
 

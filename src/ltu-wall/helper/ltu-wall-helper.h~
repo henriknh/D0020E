@@ -2,7 +2,7 @@
 #ifndef LTU_WALL_HELPER_H
 #define LTU_WALL_HELPER_H
 
-//#include <ns3/ltu-wall.h>
+#include <ns3/ltu-wall.h>
 #include <ns3/object.h>
 
 namespace ns3 {
