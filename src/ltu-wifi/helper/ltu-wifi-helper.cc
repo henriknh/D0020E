@@ -118,8 +118,19 @@ LtuWifiHelper::InstallAll() {
                          "ActiveProbing", BooleanValue (true));
         NetDeviceContainer stationDevice;
         stationDevice = wifi.Install (wifiPhy, wifiMac, this->wifiClients.Get(i));
-        this->clientIps.Add(ip->Assign (stationDevice));
+        this->wifiClientIps.Add(ip->Assign (stationDevice));
     }
+
+    //Install all wired clients
+    int numberOfWiredClients = this->wiredClients.GetN();
+    for(int i = 0; i < numberOfWiredClients; i++) 
+    {
+        //Since wired connections has already been installed by AP we only need to assign an IP
+        NetDeviceContainer wiredDevice;
+        wiredDevice.Add(this->wiredClients.Get(i)->GetDevice(1));//Loopback is 0, thus CSMA must be 1
+        this->wiredClientIps.Add(ip->Assign (wiredDevice));
+    }
+
 }
 
 NodeContainer
@@ -149,8 +160,13 @@ LtuWifiHelper::GetApIP(int index) {
 }
 
 Ipv4Address
-LtuWifiHelper::GetClientIP(int index) {
-    return this->clientIps.GetAddress(index);
+LtuWifiHelper::GetWifiClientIP(int index) {
+    return this->wifiClientIps.GetAddress(index);
+}
+
+Ipv4Address
+LtuWifiHelper::GetWiredClientIP(int index) {
+    return this->wiredClientIps.GetAddress(index);
 }
 
 }
