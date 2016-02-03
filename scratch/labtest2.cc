@@ -75,6 +75,9 @@ main (int argc, char *argv[])
   wifi.GetAP(2)->ConnectWired(wifi.GetAP(7));
   wifi.GetAP(7)->ConnectWired(wifi.GetAP(12));
 
+  NodeContainer wiredClients = wifi.CreateWiredClient(-25, 0, 0);  
+  wifi.GetAP(0)->ConnectWired(wiredClients);
+
   NodeContainer wifiClients = wifi.CreateClient(300, 150, 0, 300, 300, 20);
   wifiClients.Add(wifi.CreateClient(25, 25, 0, 50, 50, 10));
   wifiClients.Add(wifi.CreateClient(100, 50, 0, 200, 150, 35));
@@ -85,7 +88,7 @@ main (int argc, char *argv[])
 
   Address dest;
   std::string protocol;
-  dest = InetSocketAddress (wifi.GetClientIP(1), 1025);
+  dest = InetSocketAddress (wifi.GetWiredClientIP(0), 1025);
   protocol = "ns3::UdpSocketFactory";
 
   OnOffHelper onoff = OnOffHelper (protocol, dest);

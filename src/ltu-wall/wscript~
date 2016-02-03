@@ -11,7 +11,6 @@ def build(bld):
     module.source = [
         'model/ltu-wall.cc',
         'helper/ltu-wall-helper.cc',
-        'model/hybrid-wall-propagation-loss-model.cc',
         ]
 
     module_test = bld.create_ns3_module_test_library('ltu-wall')

@@ -7,6 +7,7 @@
 #include "ns3/internet-module.h"
 #include "ns3/wifi-module.h"
 #include "ns3/log.h"
+#include "ns3/propagation-loss-model.h"
 #include <string>
 #include <sstream>
 
@@ -64,13 +65,14 @@ LtuWifiHelper::CreateClient(double x, double y, double z, double deltaX, double 
 
     this->stack.Install(client);
     MobilityHelper mobility;
-    mobility.SetPositionAllocator ("ns3::GridPositionAllocator",
+    /*mobility.SetPositionAllocator ("ns3::GridPositionAllocator",
                                    "MinX", DoubleValue (x),
                                    "MinY", DoubleValue (y),
+                                   "MinZ", DoubleValue (z),
                                    "DeltaX", DoubleValue (1.0),
                                    "DeltaY", DoubleValue (1.0),
                                    "GridWidth", UintegerValue (1),
-                                   "LayoutType", StringValue ("RowFirst"));
+                                   "LayoutType", StringValue ("RowFirst"));*/
 
     std::stringstream speedStream;
     speedStream << speed;
@@ -78,23 +80,32 @@ LtuWifiHelper::CreateClient(double x, double y, double z, double deltaX, double 
     mobility.SetMobilityModel ("ns3::RandomWalk2dMobilityModel",
                                "Mode", StringValue ("Time"),
                                "Time", StringValue ("1s"),
-                               "Speed", StringValue ("ns3::ConstantRandomVariable[Constant=" + speedStream.str() + "]"),
-                               "Bounds", RectangleValue (Rectangle (x - (deltaX / 2.0), x + (deltaX / 2.0), y - (deltaY / 2.0), y + (deltaY / 2.0))));
-
+                               "Speed", StringValue ("ns3::ConstantRandomVariable[Constant=" + speedStream.str() + "]"));
     mobility.Install(client);
-
+    (client.Get(0)->GetObject<RandomWalk2dMobilityModel>())->SetAttribute("Bounds", RectangleValue (Rectangle (x - (deltaX / 2.0), x + (deltaX / 2.0), y - (deltaY / 2.0), y + (deltaY / 2.0))));
+    (client.Get(0)->GetObject<RandomWalk2dMobilityModel>())->SetAttribute("Position", VectorValue(Vector(x, y, z)));
+    
     this->clients.Add(client);
+    this->wifiClients.Add(client);
     return client;
 }
 
-void 
+void
 LtuWifiHelper::InstallAll() {
+    this->InstallAll(0);
+}
+
+void 
+LtuWifiHelper::InstallAll(Ptr<PropagationLossModel> propagationLossModel) {
     //Set upp helpers
     Ipv4AddressHelper *ip = new Ipv4AddressHelper();
     ip->SetBase("192.168.0.0", "255.255.255.0");//TODO: Create a setter
 
     YansWifiChannelHelper wifiChannel = YansWifiChannelHelper::Default ();
     Ptr<YansWifiChannel> channel = wifiChannel.Create();
+    if(propagationLossModel != 0) {
+        channel->SetPropagationLossModel(propagationLossModel);
+    }
 
     //Install all access points
     int numberOfAccessPoints = this->accessPoints.GetN();
@@ -103,9 +114,9 @@ LtuWifiHelper::InstallAll() {
         this->accessPointIps.Add(this->accessPoints.Get(i)->Install(&this->ssid, channel, ip));
     }
 
-    //Install all clients
-    int numberOfClients = this->clients.GetN();
-    for(int i = 0; i < numberOfClients; i++) 
+    //Install all wifi clients
+    int numberOfWifiClients = this->wifiClients.GetN();
+    for(int i = 0; i < numberOfWifiClients; i++) 
     {
         YansWifiPhyHelper wifiPhy = YansWifiPhyHelper::Default ();
         wifiPhy.SetPcapDataLinkType (YansWifiPhyHelper::DLT_IEEE802_11_RADIO); 
@@ -116,11 +127,36 @@ LtuWifiHelper::InstallAll() {
                          "Ssid", SsidValue (this->ssid),
                          "ActiveProbing", BooleanValue (true));
         NetDeviceContainer stationDevice;
-        stationDevice = wifi.Install (wifiPhy, wifiMac, this->clients.Get(i));
-        this->clientIps.Add(ip->Assign (stationDevice));
+        stationDevice = wifi.Install (wifiPhy, wifiMac, this->wifiClients.Get(i));
+        this->wifiClientIps.Add(ip->Assign (stationDevice));
     }
 
-    
+    //Install all wired clients
+    int numberOfWiredClients = this->wiredClients.GetN();
+    for(int i = 0; i < numberOfWiredClients; i++) 
+    {
+        //Since wired connections has already been installed by AP we only need to assign an IP
+        NetDeviceContainer wiredDevice;
+        wiredDevice.Add(this->wiredClients.Get(i)->GetDevice(1));//Loopback is 0, thus CSMA must be 1
+        this->wiredClientIps.Add(ip->Assign (wiredDevice));
+    }
+
+}
+
+NodeContainer
+LtuWifiHelper::CreateWiredClient(double x, double y, double z) {
+    NodeContainer client;
+    client.Create(1);
+
+    this->stack.Install(client);
+    MobilityHelper mobility;
+    mobility.SetMobilityModel ("ns3::ConstantPositionMobilityModel");
+    mobility.Install(client);
+    (client.Get(0)->GetObject<ConstantPositionMobilityModel>())->SetPosition(Vector(x, y, z));
+
+    this->clients.Add(client);
+    this->wiredClients.Add(client);
+    return client;
 }
 
 Ptr<WifiAccessPoint>
@@ -134,8 +170,13 @@ LtuWifiHelper::GetApIP(int index) {
 }
 
 Ipv4Address
-LtuWifiHelper::GetClientIP(int index) {
-    return this->clientIps.GetAddress(index);
+LtuWifiHelper::GetWifiClientIP(int index) {
+    return this->wifiClientIps.GetAddress(index);
+}
+
+Ipv4Address
+LtuWifiHelper::GetWiredClientIP(int index) {
+    return this->wiredClientIps.GetAddress(index);
 }
 
 }
