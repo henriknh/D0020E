@@ -7,6 +7,7 @@
 #include "ns3/wifi-module.h"
 #include "ns3/wifi-access-point.h"
 #include "ns3/wifi-access-point-container.h"
+#include "ns3/propagation-loss-model.h"
 #include <string>
 
 namespace ns3 {
@@ -22,6 +23,7 @@ public:
     NodeContainer CreateClient(double x, double y, double z, double deltaX, double deltaY);
     NodeContainer CreateClient(double x, double y, double z, double deltaX, double deltaY, double speed);
     void InstallAll();
+    void InstallAll(Ptr<PropagationLossModel> propagationLossModel);
     Ptr<WifiAccessPoint> GetAP(int index);
     Ipv4Address GetWifiClientIP(int index);
     Ipv4Address GetWiredClientIP(int index);

@@ -77,14 +77,19 @@ main (int argc, char *argv[])
 
   // CREATE MUTTER WOOPING BUKLDING 
   Ptr<Building> building1 = CreateObject<Building> ();
-  building1->SetBoundaries (Box (25, 75, -100, 100.0, -200.0, 200));
+  building1->SetBoundaries (Box (-100, 100, 5, 15, -200.0, 200));
   building1->SetBuildingType (Building::Residential);
   building1->SetExtWallsType (Building::ConcreteWithoutWindows);
   building1->SetNFloors (1); //1 floor per every 4th height
 
   // PROGATATION WALL LOSS MODEL LELELE
   Ptr<MobilityBuildingInfo> mbuildingInfo = CreateObject<MobilityBuildingInfo> ();
-
+  Ptr<HybridWallPropagationLossModel> lossModel = CreateObject<HybridWallPropagationLossModel>();
+  lossModel->SetAttribute ("ShadowSigmaOutdoor", DoubleValue (7.0));
+  lossModel->SetAttribute ("ShadowSigmaIndoor", DoubleValue (10.0));
+  lossModel->SetAttribute ("ShadowSigmaExtWalls", DoubleValue (5.0));
+  
+  lossModel->SetAttribute ("Los2NlosThr", DoubleValue (1.0));
 
 
 
@@ -97,13 +102,11 @@ main (int argc, char *argv[])
   Ptr<WifiAccessPoint> ap2 = wifi.CreateAccessPoint(100, 0, 1);
   ap1->ConnectWired(ap2);
 
-  NodeContainer wifiClients = wifi.CreateClient(300, 150, 0, 300, 300, 20);
-  wifiClients.Add(wifi.CreateClient(25, 25, 0, 50, 50, 10));
-  wifiClients.Add(wifi.CreateClient(100, 50, 0, 200, 150, 35));
-  wifiClients.Add(wifi.CreateClient(200, 75, 100, 50, 100, 5));
-  wifiClients.Add(wifi.CreateClient(200, 100, 0, 100, 100));
+  NodeContainer wifiClients = wifi.CreateClient(25, 25, 1, 50, 50, 10);
+  wifiClients.Add(wifi.CreateClient(100, 25, 1, 50, 50, 5));
 
-  wifi.InstallAll();
+  //wifi.InstallAll();//Without building
+  wifi.InstallAll(lossModel);//With building
 
   Ptr<MobilityModel> mm;
   int containerSize = wifiClients.GetN();
@@ -113,17 +116,25 @@ main (int argc, char *argv[])
         //BuildingsHelper::MakeConsistent(mm);
   }
 
-  mm = ap1->GetMobilityModel();
+  /*mm = ap1->GetMobilityModel();
   mm->AggregateObject (mbuildingInfo);
   BuildingsHelper::MakeConsistent(mm);
   mm = ap2->GetMobilityModel();
   mm->AggregateObject (mbuildingInfo);
-  BuildingsHelper::MakeConsistent(mm);
+  BuildingsHelper::MakeConsistent(mm);*/
+  
+  NodeContainer allNodes;
+  allNodes.Add(wifiClients);
+  allNodes.Add(ap1->GetNode());
+  allNodes.Add(ap2->GetNode());
+  
+  BuildingsHelper building;
+  building.Install(allNodes);
 
 
   Address dest;
   std::string protocol;
-  dest = InetSocketAddress (wifi.GetClientIP(1), 1025);
+  dest = InetSocketAddress (wifi.GetWifiClientIP(1), 1025);
   protocol = "ns3::UdpSocketFactory";
 
   OnOffHelper onoff = OnOffHelper (protocol, dest);
@@ -132,7 +143,7 @@ main (int argc, char *argv[])
   apps.Start (Seconds (0.5));
   //apps.Stop (Seconds (300.0));
 
-  AnimationInterface anim ("labtest2-animation.xml");
+  AnimationInterface anim ("wall-animation.xml");
 
   //Simulator::Stop (Seconds (300.0));
   Simulator::Run ();

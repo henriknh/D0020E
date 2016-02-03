@@ -7,6 +7,7 @@
 #include "ns3/internet-module.h"
 #include "ns3/wifi-module.h"
 #include "ns3/log.h"
+#include "ns3/propagation-loss-model.h"
 #include <string>
 #include <sstream>
 
@@ -64,13 +65,14 @@ LtuWifiHelper::CreateClient(double x, double y, double z, double deltaX, double 
 
     this->stack.Install(client);
     MobilityHelper mobility;
-    mobility.SetPositionAllocator ("ns3::GridPositionAllocator",
+    /*mobility.SetPositionAllocator ("ns3::GridPositionAllocator",
                                    "MinX", DoubleValue (x),
                                    "MinY", DoubleValue (y),
+                                   "MinZ", DoubleValue (z),
                                    "DeltaX", DoubleValue (1.0),
                                    "DeltaY", DoubleValue (1.0),
                                    "GridWidth", UintegerValue (1),
-                                   "LayoutType", StringValue ("RowFirst"));
+                                   "LayoutType", StringValue ("RowFirst"));*/
 
     std::stringstream speedStream;
     speedStream << speed;
@@ -78,24 +80,32 @@ LtuWifiHelper::CreateClient(double x, double y, double z, double deltaX, double 
     mobility.SetMobilityModel ("ns3::RandomWalk2dMobilityModel",
                                "Mode", StringValue ("Time"),
                                "Time", StringValue ("1s"),
-                               "Speed", StringValue ("ns3::ConstantRandomVariable[Constant=" + speedStream.str() + "]"),
-                               "Bounds", RectangleValue (Rectangle (x - (deltaX / 2.0), x + (deltaX / 2.0), y - (deltaY / 2.0), y + (deltaY / 2.0))));
-
+                               "Speed", StringValue ("ns3::ConstantRandomVariable[Constant=" + speedStream.str() + "]"));
     mobility.Install(client);
-
+    (client.Get(0)->GetObject<RandomWalk2dMobilityModel>())->SetAttribute("Bounds", RectangleValue (Rectangle (x - (deltaX / 2.0), x + (deltaX / 2.0), y - (deltaY / 2.0), y + (deltaY / 2.0))));
+    (client.Get(0)->GetObject<RandomWalk2dMobilityModel>())->SetAttribute("Position", VectorValue(Vector(x, y, z)));
+    
     this->clients.Add(client);
     this->wifiClients.Add(client);
     return client;
 }
 
-void 
+void
 LtuWifiHelper::InstallAll() {
+    this->InstallAll(0);
+}
+
+void 
+LtuWifiHelper::InstallAll(Ptr<PropagationLossModel> propagationLossModel) {
     //Set upp helpers
     Ipv4AddressHelper *ip = new Ipv4AddressHelper();
     ip->SetBase("192.168.0.0", "255.255.255.0");//TODO: Create a setter
 
     YansWifiChannelHelper wifiChannel = YansWifiChannelHelper::Default ();
     Ptr<YansWifiChannel> channel = wifiChannel.Create();
+    if(propagationLossModel != 0) {
+        channel->SetPropagationLossModel(propagationLossModel);
+    }
 
     //Install all access points
     int numberOfAccessPoints = this->accessPoints.GetN();
