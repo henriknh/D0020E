@@ -6,7 +6,12 @@
 
 namespace ns3 {
 
-/* ... */
+class LtuTopologyHelper{
+public:
+createWifiTopology();
+
+
+}
 
 }
 
