@@ -50,6 +50,7 @@ LtuWifiHelper::CreateClient(double x, double y, double z) {
     (client.Get(0)->GetObject<ConstantPositionMobilityModel>())->SetPosition(Vector(x, y, z));
 
     this->clients.Add(client);
+    this->wifiClients.Add(client);
     return client;
 }
 
