@@ -8,6 +8,7 @@
 #include "ns3/wifi-module.h"
 #include "ns3/log.h"
 #include "ns3/propagation-loss-model.h"
+#include <ns3/buildings-helper.h>
 #include <string>
 #include <sstream>
 
@@ -110,9 +111,11 @@ LtuWifiHelper::InstallAll(Ptr<PropagationLossModel> propagationLossModel) {
 
     //Install all access points
     int numberOfAccessPoints = this->accessPoints.GetN();
+    NodeContainer apNodes;
     for(int i = 0; i < numberOfAccessPoints; i++) 
     {
         this->accessPointIps.Add(this->accessPoints.Get(i)->Install(&this->ssid, channel, ip));
+        apNodes.Add(this->accessPoints.Get(i)->GetNode());
     }
 
     //Install all wifi clients
@@ -142,6 +145,14 @@ LtuWifiHelper::InstallAll(Ptr<PropagationLossModel> propagationLossModel) {
         this->wiredClientIps.Add(ip->Assign (wiredDevice));
     }
 
+    if(propagationLossModel != 0) {
+        NodeContainer allNodes;
+        allNodes.Add(this->clients);
+        allNodes.Add(apNodes);
+  
+        BuildingsHelper building;
+        building.Install(allNodes);
+    }
 }
 
 NodeContainer
