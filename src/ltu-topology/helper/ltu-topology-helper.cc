@@ -5,7 +5,7 @@
 
 namespace ns3 {
 
-LtuTopologyHelper::createWifiTopology(){
+void LtuTopologyHelper::createWifiTopology(){
 
 //7 < 4 < 3 < 1 < 2
 //7 < 5 < 6
@@ -78,6 +78,12 @@ wifi.GetAP(20)->ConnectWired(wifi.GetAP(19)); //AP 20 < 21
 wifi.GetAP(21)->ConnectWired(wifi.GetAP(18)); //AP 19 < 22
 
 wifi.InstallAll();
+
+  //AnimationInterface anim ("Topology-animation.xml");
+
+  //Simulator::Stop (Seconds (300.0));
+  //Simulator::Run ();
+ // Simulator::Destroy ();
 
 }
 
