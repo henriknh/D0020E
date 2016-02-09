@@ -105,31 +105,8 @@ main (int argc, char *argv[])
   NodeContainer wifiClients = wifi.CreateClient(25, 25, 1, 50, 50, 10);
   wifiClients.Add(wifi.CreateClient(100, 25, 1, 50, 50, 5));
 
-  //wifi.InstallAll();//Without building
-  wifi.InstallAll(lossModel);//With building
-
-  Ptr<MobilityModel> mm;
-  int containerSize = wifiClients.GetN();
-  for(int i = 0; i < containerSize; i++) {
-        mm = wifiClients.Get(i)->GetObject<MobilityModel>();
-        //mm->AggregateObject(mbuildingInfo);
-        //BuildingsHelper::MakeConsistent(mm);
-  }
-
-  /*mm = ap1->GetMobilityModel();
-  mm->AggregateObject (mbuildingInfo);
-  BuildingsHelper::MakeConsistent(mm);
-  mm = ap2->GetMobilityModel();
-  mm->AggregateObject (mbuildingInfo);
-  BuildingsHelper::MakeConsistent(mm);*/
-  
-  NodeContainer allNodes;
-  allNodes.Add(wifiClients);
-  allNodes.Add(ap1->GetNode());
-  allNodes.Add(ap2->GetNode());
-  
-  BuildingsHelper building;
-  building.Install(allNodes);
+  wifi.InstallAll();//Without building
+  //wifi.InstallAll(lossModel);//With building
 
 
   Address dest;
@@ -141,11 +118,11 @@ main (int argc, char *argv[])
   onoff.SetConstantRate (DataRate ("500kb/s"));
   ApplicationContainer apps = onoff.Install (wifiClients.Get(0));
   apps.Start (Seconds (0.5));
-  //apps.Stop (Seconds (300.0));
+  apps.Stop (Seconds (19.5));
 
   AnimationInterface anim ("wall-animation.xml");
 
-  //Simulator::Stop (Seconds (300.0));
+  Simulator::Stop (Seconds (19.5));
   Simulator::Run ();
   Simulator::Destroy ();
 

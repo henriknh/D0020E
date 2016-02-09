@@ -13,10 +13,12 @@
 
 using namespace ns3;
 
-int
+int 
 main (int argc, char *argv[])
 {
-	
+  	CommandLine cmd;
+  	cmd.Parse (argc,argv);
+
 	LtuTopologyHelper mineTopology;
 	mineTopology.createWifiTopology();
 	AnimationInterface anim ("LtuTopology-animation.xml");
