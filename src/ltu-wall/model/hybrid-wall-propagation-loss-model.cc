@@ -24,6 +24,9 @@
 
 #include <ns3/hybrid-wall-propagation-loss-model.h>
 
+#include <ns3/ltu-wall-container.h>
+#include <ns3/ltu-wall-helper.h>
+
 #define PI 3.14159265
 
 namespace ns3 {
@@ -39,77 +42,48 @@ HybridWallPropagationLossModel::HybridWallPropagationLossModel ()
   m_ituR1411NlosOverRooftop = CreateObject<ItuR1411NlosOverRooftopPropagationLossModel> ();
   m_ituR1238 = CreateObject<ItuR1238PropagationLossModel> ();
   m_kun2600Mhz = CreateObject<Kun2600MhzPropagationLossModel> ();
+  
 }
-HybridWallPropagationLossModel::~HybridWallPropagationLossModel (){}
+HybridWallPropagationLossModel::~HybridWallPropagationLossModel () {}
 
 double HybridWallPropagationLossModel::GetLoss (Ptr<MobilityModel> a, Ptr<MobilityModel> b) const
 {
- 
-  //NS_ASSERT_MSG ((a->GetPosition ().z >= 0) && (b->GetPosition ().z >= 0), "HybridBuildingsPropagationLossModel does not support underground nodes (placed at z < 0)");
+  this->walls.GetN();
+
+  Ptr<Wall> w;
+  double wall_pos[4];
+
+  for(unsigned int i = 0; i < walls.GetN(); i++) {
+    
+    w = walls.Get(i);
+    w->GetPosition(wall_pos);
+
+    double p0_x = a->GetPosition ().x;
+    double p0_y = a->GetPosition ().y;
+    double p1_x = b->GetPosition ().x;
+    double p1_y = b->GetPosition ().y;
+    double p2_x = wall_pos[0];
+    double p2_y = wall_pos[1];
+    double p3_x = wall_pos[2];
+    double p3_y = wall_pos[3];
+
+    if(get_wall_intersection(p0_x, p0_y, p1_x, p1_y, p2_x, p2_y, p3_x, p3_y)) {
+      NS_LOG_INFO("Number of loops: " << i);
+      return 999999;
+    }
+  }
+
+
+
+
+  NS_ASSERT_MSG ((a->GetPosition ().z >= 0) && (b->GetPosition ().z >= 0), "HybridBuildingsPropagationLossModel does not support underground nodes (placed at z < 0)");
  
   double distance = a->GetDistanceFrom (b);
 
   // get the MobilityBuildingInfo pointers
   Ptr<MobilityBuildingInfo> a1 = a->GetObject<MobilityBuildingInfo> ();
   Ptr<MobilityBuildingInfo> b1 = b->GetObject<MobilityBuildingInfo> ();
-  //NS_ASSERT_MSG ((a1 != 0) && (b1 != 0), "HybridBuildingsPropagationLossModel only works with MobilityBuildingInfo");
-
-
-
-
-
-
-
-
-        //http://stackoverflow.com/questions/7586063/how-to-calculate-the-angle-between-a-line-and-the-horizontal-axis
-        //http://gamedev.stackexchange.com/questions/48119/how-do-i-calculate-how-an-object-will-move-from-one-point-to-another
-
-  int step = 0;
-  int deltaX = b->GetPosition ().x - a->GetPosition ().x;
-  int deltaY = b->GetPosition ().y - a->GetPosition ().y;
-  double angle = atan2(deltaY, deltaX) * 180 / PI;
-  double sumX = 0;
-  double sumY = 0;
-
-  while(step <= distance) {
-  
-        // Calculate next position
-    double dx = (double) (cos((angle * PI)/180) * 1);
-    double dy = (double) (sin((angle * PI)/180) * 1);
-
-    sumX += dx; 
-    sumY += dy;
-    if(sumX > deltaX) {
-        sumX = deltaX;
-    }
-    if(sumY > deltaY) {
-        sumY = deltaY;
-    }
-        
-    NS_LOG_INFO("STEP TEST\tsumX: " << sumX << "\tsumY: " << sumY <<"\tangle: " << angle << "\tstep: " << step); 
-
-    // Create temp point 1 step further
-    Ptr<ConstantPositionMobilityModel> temp = CreateObject<ConstantPositionMobilityModel> ();
-    temp->SetPosition (Vector (sumX, sumY, 1.0));
-      
-    temp->AggregateObject (a1); // operation usually done by BuildingsHelper::Install
-    BuildingsHelper::MakeConsistent (temp);
-
-    // Do check if inside
-    Ptr<MobilityBuildingInfo> temp1 = temp->GetObject<MobilityBuildingInfo> ();    
-    if(!temp1->IsOutdoor()) {
-      return 99999.0;
-    }  
-
-    step++;
-  }
-
-         
-
-
-
-
-
+  NS_ASSERT_MSG ((a1 != 0) && (b1 != 0), "HybridBuildingsPropagationLossModel only works with MobilityBuildingInfo");
 
   double loss = 0.0;
 
@@ -255,31 +229,38 @@ HybridWallPropagationLossModel::ItuR1238 (Ptr<MobilityModel> a, Ptr<MobilityMode
   return m_ituR1238->GetLoss (a,b);
 }
 
+char
+HybridWallPropagationLossModel::get_wall_intersection(double p0_x, double p0_y, double p1_x, double p1_y, 
+    double p2_x, double p2_y, double p3_x, double p3_y) const
+{
+  double s1_x, s1_y, s2_x, s2_y;
+  s1_x = p1_x - p0_x;     s1_y = p1_y - p0_y;
+  s2_x = p3_x - p2_x;     s2_y = p3_y - p2_y;
+
+  double s, t;
+  s = (-s1_y * (p0_x - p2_x) + s1_x * (p0_y - p2_y)) / (-s2_x * s1_y + s1_x * s2_y);
+  t = ( s2_x * (p0_y - p2_y) - s2_y * (p0_x - p2_x)) / (-s2_x * s1_y + s1_x * s2_y);
+
+  if (s >= 0 && s <= 1 && t >= 0 && t <= 1)
+  {
+    // Collision detected
+    return 1;
+  }
+
+  return 0; // No collision
+}
+
+void
+HybridWallPropagationLossModel::InstallWalls(LtuWallContainer walls)
+{
+  this->walls = walls;
+}
+
+
 } // namespace ns3
 
 
 
 
 
-/*int pos_a = a->GetPosition ().x;
-  int pos_b = b->GetPosition ().x;
-  while(pos_a <= pos_b)   {
-        
-      Ptr<ConstantPositionMobilityModel> temp = CreateObject<ConstantPositionMobilityModel> ();
-      temp->SetPosition (Vector (pos_a, 0.0, 1.0));
-      
-      temp->AggregateObject (a1); // operation usually done by BuildingsHelper::Install
-      //BuildingsHelper::MakeConsistent (a1);
-      BuildingsHelper::MakeConsistent (temp);
 
-
-      Ptr<MobilityBuildingInfo> temp1 = temp->GetObject<MobilityBuildingInfo> ();
-      NS_LOG_INFO("index: " << pos_a << "\tIsOutdoor: " << temp1->IsOutdoor());
-        
-
-        if(!temp1->IsOutdoor()) {
-                return 99999.0;
-}
-      
-      ++pos_a;
-}*/
