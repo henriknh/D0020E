@@ -2,8 +2,7 @@
 #ifndef LTU_WALL_CONTAINER_H
 #define LTU_WALL_CONTAINER_H
 
-#include "ns3/ptr.h"
-#include "ltu-wall.h"
+#include <ns3/ltu-wall.h>
 #include <vector>
 
 namespace ns3 {
@@ -19,7 +18,7 @@ protected:
     std::vector<Ptr<Wall> > m_walls; //!< Wall smart pointers
 };
 
-}
+} // ns3
 
 #endif /* LTU_WALL_CONTAINER_H */
 

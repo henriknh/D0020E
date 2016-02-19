@@ -1,33 +1,13 @@
 /* -*-  Mode: C++; c-file-style: "gnu"; indent-tabs-mode:nil; -*- */
 
-
-
-
-#include <cmath>
-#include <math.h>
-
-#include "ns3/core-module.h"
-#include <ns3/hybrid-buildings-propagation-loss-model.h>
-#include "ns3/log.h"
-#include "ns3/mobility-model.h"
-#include "ns3/double.h"
-#include "ns3/pointer.h"
-#include "ns3/okumura-hata-propagation-loss-model.h"
-#include "ns3/itu-r-1411-los-propagation-loss-model.h"
-#include "ns3/itu-r-1411-nlos-over-rooftop-propagation-loss-model.h"
-#include "ns3/itu-r-1238-propagation-loss-model.h"
-#include "ns3/kun-2600-mhz-propagation-loss-model.h"
-#include <ns3/mobility-building-info.h>
-#include "ns3/enum.h"
-#include <ns3/buildings-helper.h>
+#include <ns3/core-module.h>
+#include <ns3/okumura-hata-propagation-loss-model.h>
+#include <ns3/itu-r-1411-los-propagation-loss-model.h>
+#include <ns3/itu-r-1411-nlos-over-rooftop-propagation-loss-model.h>
+#include <ns3/itu-r-1238-propagation-loss-model.h>
+#include <ns3/kun-2600-mhz-propagation-loss-model.h>
 #include <ns3/constant-position-mobility-model.h>
-
 #include <ns3/hybrid-wall-propagation-loss-model.h>
-
-#include <ns3/ltu-wall-container.h>
-#include <ns3/ltu-wall-helper.h>
-
-#define PI 3.14159265
 
 namespace ns3 {
 
@@ -47,15 +27,13 @@ HybridWallPropagationLossModel::HybridWallPropagationLossModel ()
 HybridWallPropagationLossModel::~HybridWallPropagationLossModel () {}
 
 double HybridWallPropagationLossModel::GetLoss (Ptr<MobilityModel> a, Ptr<MobilityModel> b) const
-{
-  this->walls.GetN();
-
+{ 
   Ptr<Wall> w;
   double wall_pos[4];
 
-  for(unsigned int i = 0; i < walls.GetN(); i++) {
+  for(unsigned int i = 0; i < walls->GetN(); i++) {
     
-    w = walls.Get(i);
+    w = walls->Get(i);
     w->GetPosition(wall_pos);
 
     double p0_x = a->GetPosition ().x;
@@ -251,7 +229,7 @@ HybridWallPropagationLossModel::get_wall_intersection(double p0_x, double p0_y, 
 }
 
 void
-HybridWallPropagationLossModel::InstallWalls(LtuWallContainer walls)
+HybridWallPropagationLossModel::InstallWalls(LtuWallContainer *walls)
 {
   this->walls = walls;
 }

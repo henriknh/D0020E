@@ -1,9 +1,9 @@
 /* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 
+#include <ns3/core-module.h>
 #include <ns3/ltu-wall-helper.h>
 #include <ns3/log.h>
 #include "ns3/hybrid-wall-propagation-loss-model.h"
-#include "ns3/ptr.h"
 
 using namespace std;
 
@@ -58,7 +58,7 @@ LtuWallHelper::GetN(void)
 void
 LtuWallHelper::InstallWalls()
 {
-  this->propagationLossModel->InstallWalls(this->walls);
+  this->propagationLossModel->InstallWalls(&this->walls);
 }
 
 Ptr<HybridWallPropagationLossModel> 

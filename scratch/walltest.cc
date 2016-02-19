@@ -18,20 +18,9 @@
 * Author: Marco Miozzo <marco.miozzo@cttc.es>
 */
 
-#include "ns3/core-module.h"
-#include "ns3/network-module.h"
-#include "ns3/mobility-module.h"
-#include "ns3/config-store.h"
+#include <ns3/core-module.h>
+#include <ns3/mobility-module.h>
 #include <ns3/buildings-helper.h>
-#include <ns3/hybrid-buildings-propagation-loss-model.h>
-#include <ns3/hybrid-wall-propagation-loss-model.h>
-#include <ns3/constant-position-mobility-model.h>
-#include <ns3/ltu-wifi.h>
-
-#include <iomanip>
-#include <string>
-#include <vector>
-
 #include <ns3/ltu-wall-helper.h>
 
 using namespace ns3;
@@ -44,15 +33,8 @@ main (int argc, char *argv[])
   LogComponentEnable("Walltest", LOG_LEVEL_INFO);
   LogComponentEnable("HybridBuildingsPropagationLossModel", LOG_LEVEL_INFO);
   LogComponentEnable("HybridWallPropagationLossModel", LOG_LEVEL_INFO);
+  LogComponentEnable("LtuWallHelper", LOG_LEVEL_INFO);
   
-  // ???
-  CommandLine cmd;
-  cmd.Parse(argc, argv);
-  ConfigStore inputConfig;
-  inputConfig.ConfigureDefaults ();
-  cmd.Parse (argc, argv);
-
-
 
   // Init LtuWallHelper
   LtuWallHelper wallhelper;

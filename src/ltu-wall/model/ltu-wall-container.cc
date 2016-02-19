@@ -1,16 +1,11 @@
 /* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 
-#include "ltu-wall-container.h"
-#include "ltu-wall.h"
-#include "ns3/log.h"
+#include <ns3/ltu-wall-container.h>
 
 
 namespace ns3 {
-NS_LOG_COMPONENT_DEFINE ("LtuWallContainer");
 
-LtuWallContainer::LtuWallContainer() {
-    
-}
+LtuWallContainer::LtuWallContainer() {}
 
 uint32_t 
 LtuWallContainer::GetN (void) const

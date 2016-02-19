@@ -24,31 +24,17 @@
 #define HYBRID_WALL_PROPAGATION_LOSS_MODEL_H_
 
 #include <ns3/hybrid-buildings-propagation-loss-model.h>
-#include "ns3/ltu-wall-container.h"
-
-#include "ns3/ltu-wifi.h"
-#include "ns3/wifi-module.h"
-#include "ns3/wifi-access-point.h"
-#include "ns3/wifi-access-point-container.h"
-#include "ns3/propagation-loss-model.h"
-#include <string>
-#include <ns3/log.h>
-#include "ns3/ptr.h"
-#include <vector>
-#include "ns3/node-container.h"
-
-
+#include <ns3/ltu-wall-container.h>
 
 namespace ns3 {
 
 class HybridWallPropagationLossModel : public HybridBuildingsPropagationLossModel
 {
 public:
-  //static TypeId GetTypeId (void);
   HybridWallPropagationLossModel ();
   ~HybridWallPropagationLossModel ();
   virtual double GetLoss (Ptr<MobilityModel> a, Ptr<MobilityModel> b) const;
-  void InstallWalls(LtuWallContainer walls);
+  void InstallWalls(LtuWallContainer *walls);
 
 private: 
   double OkumuraHata (Ptr<MobilityModel> a, Ptr<MobilityModel> b) const;
@@ -66,10 +52,10 @@ private:
   double m_itu1411NlosThreshold; ///< in meters (switch Los -> NLoS)
   double m_rooftopHeight;
   double m_frequency;
-  LtuWallContainer walls;
+  LtuWallContainer *walls;
 
 };
 
-}
+} // ns3
 
 #endif /* HYBRID_WALL_PROPAGATION_LOSS_MODEL_H_ */

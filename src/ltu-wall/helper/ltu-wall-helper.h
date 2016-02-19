@@ -2,15 +2,7 @@
 #ifndef LTU_WALL_HELPER_H
 #define LTU_WALL_HELPER_H
 
-
-#include <ns3/object.h>
-#include "ns3/node-container.h"
-#include "ns3/ltu-wall.h"
-#include "ns3/ltu-wall-container.h"
-#include <string>
-#include "ns3/ptr.h"
 #include "ns3/hybrid-wall-propagation-loss-model.h"
-
 
 namespace ns3 {
 

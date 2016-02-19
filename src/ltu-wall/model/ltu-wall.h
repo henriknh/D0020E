@@ -2,12 +2,9 @@
 #ifndef LTU_WALL_H
 #define LTU_WALL_H
 
-#include "ns3/ptr.h"
-#include <vector>
-#include "ns3/node-container.h"
+#include <ns3/node-container.h>
 
 namespace ns3 {
-
 
 class Wall : public SimpleRefCount<Wall> {
 public:
@@ -20,11 +17,7 @@ private:
   double y1;
 };
 
-
-
-
-
-}
+} // ns3
 
 #endif /* LTU_WALL_H */
 
