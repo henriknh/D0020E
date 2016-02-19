@@ -22,6 +22,7 @@ def build(bld):
     headers.module = 'ltu-lte'
     headers.source = [
         'model/ltu-lte.h',
+        'model/ltu-base-station.h',
         'helper/ltu-lte-helper.h',
         ]
 

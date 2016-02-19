@@ -2,11 +2,31 @@
 #ifndef LTU_LTE_HELPER_H
 #define LTU_LTE_HELPER_H
 
-#include "ns3/ltu-lte.h"
+#include "ns3/core-module.h"
+#include "ns3/lte-module.h"
+#include "ns3/ltu-base-station.h"
 
 namespace ns3 {
 
-/* ... */
+class LtuLteHelper {
+public:
+    LtuLteHelper();
+    ~LtuLteHelper ();//Destructor
+
+    Ptr<LtuBaseStation> CreateENB(double x, double y, double z);
+    NodeContainer CreateUE(double x, double y, double z);
+    NodeContainer CreateUE(double x, double y, double z, double deltaX, double deltaY);
+    NodeContainer CreateUE(double x, double y, double z, double deltaX, double deltaY, double speed);
+    void ConnectInternetNode(NodeContainer internetNode);
+    void InstallAll();
+
+protected:
+    NodeContainer eNBs;
+    NodeContainer UEs;
+    NodeContainer internetNodes;
+    PointToPointEpcHelper epcHelper;
+    LteHelper lteHelper;
+};
 
 }
 
