@@ -2,6 +2,8 @@
 
 #include <ns3/ltu-wall-helper.h>
 #include <ns3/log.h>
+#include "ns3/hybrid-wall-propagation-loss-model.h"
+#include "ns3/ptr.h"
 
 using namespace std;
 
@@ -15,6 +17,8 @@ NS_LOG_COMPONENT_DEFINE ("LtuWallHelper");
 LtuWallHelper::LtuWallHelper () 
 {
   NS_LOG_FUNCTION (this);
+  
+  propagationLossModel = CreateObject<HybridWallPropagationLossModel> ();
 }
 
 LtuWallHelper::~LtuWallHelper ()
@@ -22,23 +26,47 @@ LtuWallHelper::~LtuWallHelper ()
   NS_LOG_FUNCTION (this);
 }
 
-/*TypeId
-LtuWallHelper::GetTypeId (void)
+Ptr<Wall>
+LtuWallHelper::CreateWall(double x0, double y0, double x1, double y1)
 {
-  static TypeId tid = TypeId ("ns3::LtuWallHelper")
-    .SetParent<LtuWall> ()
-    .SetGroupName("LtuWall")
-    .AddConstructor<LtuWallHelper> ()
-    ;
-  return tid;
-}*/
+    Wall *w = new Wall(x0, y0, x1, y1);
+    Ptr<Wall> wPtr;
+    wPtr = Ptr<Wall>(w);
+    this->walls.Add(wPtr);
+    return wPtr;
+}
 
-
-void LtuWallHelper::CreateWall (uint64_t x1, uint64_t y1, uint64_t z1, uint64_t x2, uint64_t y2, uint64_t z2)
+Ptr<Wall>
+LtuWallHelper::GetWall(int i)
 {
-  
+  return this->walls.Get(i);
 }
 
 
+LtuWallContainer
+LtuWallHelper::GetWallsContainer()
+{
+  return walls;
 }
+
+int
+LtuWallHelper::GetN(void)
+{
+   return walls.GetN();
+}
+
+void
+LtuWallHelper::InstallWalls()
+{
+  this->propagationLossModel->InstallWalls(this->walls);
+}
+
+Ptr<HybridWallPropagationLossModel> 
+LtuWallHelper::GetLossModel()
+{
+  return this->propagationLossModel;
+}
+
+
+} // NS3
 

@@ -24,6 +24,20 @@
 #define HYBRID_WALL_PROPAGATION_LOSS_MODEL_H_
 
 #include <ns3/hybrid-buildings-propagation-loss-model.h>
+#include "ns3/ltu-wall-container.h"
+
+#include "ns3/ltu-wifi.h"
+#include "ns3/wifi-module.h"
+#include "ns3/wifi-access-point.h"
+#include "ns3/wifi-access-point-container.h"
+#include "ns3/propagation-loss-model.h"
+#include <string>
+#include <ns3/log.h>
+#include "ns3/ptr.h"
+#include <vector>
+#include "ns3/node-container.h"
+
+
 
 namespace ns3 {
 
@@ -34,11 +48,14 @@ public:
   HybridWallPropagationLossModel ();
   ~HybridWallPropagationLossModel ();
   virtual double GetLoss (Ptr<MobilityModel> a, Ptr<MobilityModel> b) const;
+  void InstallWalls(LtuWallContainer walls);
 
 private: 
   double OkumuraHata (Ptr<MobilityModel> a, Ptr<MobilityModel> b) const;
   double ItuR1411 (Ptr<MobilityModel> a, Ptr<MobilityModel> b) const;
   double ItuR1238 (Ptr<MobilityModel> a, Ptr<MobilityModel> b) const;
+  char get_wall_intersection(double p0_x, double p0_y, double p1_x, double p1_y, 
+    double p2_x, double p2_y, double p3_x, double p3_y) const;
 
   Ptr<OkumuraHataPropagationLossModel> m_okumuraHata;
   Ptr<ItuR1411LosPropagationLossModel> m_ituR1411Los;
@@ -49,45 +66,10 @@ private:
   double m_itu1411NlosThreshold; ///< in meters (switch Los -> NLoS)
   double m_rooftopHeight;
   double m_frequency;
+  LtuWallContainer walls;
+
 };
 
 }
 
 #endif /* HYBRID_WALL_PROPAGATION_LOSS_MODEL_H_ */
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-          int pos_a = a->GetPosition ().x;
-  int pos_b = b->GetPosition ().x;
-  while(pos_a <= pos_b)   {
-        
-      Ptr<ConstantPositionMobilityModel> temp = CreateObject<ConstantPositionMobilityModel> ();
-      temp->SetPosition (Vector (pos_a, 0.0, 1.0));
-      
-      temp->AggregateObject (a1); // operation usually done by BuildingsHelper::Install
-      //BuildingsHelper::MakeConsistent (a1);
-      BuildingsHelper::MakeConsistent (temp);
-
-
-      Ptr<MobilityBuildingInfo> temp1 = temp->GetObject<MobilityBuildingInfo> ();
-      NS_LOG_INFO("index: " << pos_a << "\tIsOutdoor: " << temp1->IsOutdoor());
-        
-
-        if(!temp1->IsOutdoor()) {
-                return 99999.0;
-}
-      
-      ++pos_a;
-}
-*/
