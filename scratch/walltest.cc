@@ -32,7 +32,6 @@
 #include <string>
 #include <vector>
 
-#include "walltest.h"
 #include <ns3/ltu-wall-helper.h>
 
 using namespace ns3;
