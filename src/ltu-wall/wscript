@@ -10,8 +10,9 @@ def build(bld):
     module = bld.create_ns3_module('ltu-wall', ['core'])
     module.source = [
         'model/ltu-wall.cc',
+        'model/ltu-wall-container.cc',
         'helper/ltu-wall-helper.cc',
-        'model/hybrid-wall-propagation-loss-model.cc',
+        'model/hybrid-wall-propagation-loss-model.cc'
         ]
 
     module_test = bld.create_ns3_module_test_library('ltu-wall')
@@ -23,8 +24,9 @@ def build(bld):
     headers.module = 'ltu-wall'
     headers.source = [
         'model/ltu-wall.h',
+        'model/ltu-wall-container.h',
         'helper/ltu-wall-helper.h',
-        'model/hybrid-wall-propagation-loss-model.h',
+        'model/hybrid-wall-propagation-loss-model.h'
         ]
 
     if bld.env.ENABLE_EXAMPLES:
