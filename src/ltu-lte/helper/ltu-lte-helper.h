@@ -24,9 +24,7 @@ public:
 protected:
     LtuBaseStationContainer eNBs;
     NodeContainer UEs;
-    NodeContainer internetNodes;
-    PointToPointEpcHelper epcHelper;
-    LteHelper lteHelper;
+    //NodeContainer internetNodes;
 };
 
 }
