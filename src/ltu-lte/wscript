@@ -11,6 +11,8 @@ def build(bld):
     module.source = [
         'model/ltu-lte.cc',
         'helper/ltu-lte-helper.cc',
+        'model/ltu-base-station.cc',
+        'model/ltu-base-station-container.cc',
         ]
 
     module_test = bld.create_ns3_module_test_library('ltu-lte')
@@ -24,6 +26,7 @@ def build(bld):
         'model/ltu-lte.h',
         'model/ltu-base-station.h',
         'helper/ltu-lte-helper.h',
+        'model/ltu-base-station-container.h',
         ]
 
     if bld.env.ENABLE_EXAMPLES:

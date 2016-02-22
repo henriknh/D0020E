@@ -2,6 +2,9 @@
 #ifndef LTU_BASE_STATION_H
 #define LTU_BASE_STATION_H
 
+
+#include "ns3/node-container.h"
+
 namespace ns3 {
 
 class LtuBaseStation : public SimpleRefCount<LtuBaseStation> {

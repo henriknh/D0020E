@@ -5,6 +5,7 @@
 #include "ns3/core-module.h"
 #include "ns3/lte-module.h"
 #include "ns3/ltu-base-station.h"
+#include "ns3/ltu-base-station-container.h"
 
 namespace ns3 {
 
@@ -21,7 +22,7 @@ public:
     void InstallAll();
 
 protected:
-    NodeContainer eNBs;
+    LtuBaseStationContainer eNBs;
     NodeContainer UEs;
     NodeContainer internetNodes;
     PointToPointEpcHelper epcHelper;
