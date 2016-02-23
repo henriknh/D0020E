@@ -3,6 +3,7 @@
 #include "ltu-base-station.h"
 #include "ns3/log.h"
 #include "ns3/mobility-module.h"
+#include "ns3/node-container.h"
 
 namespace ns3 {
 
@@ -14,6 +15,11 @@ LtuBaseStation::LtuBaseStation(double x, double y, double z) {
     mobility.SetMobilityModel ("ns3::ConstantPositionMobilityModel");
     mobility.Install(this->node);
     (this->node.Get(0)->GetObject<ConstantPositionMobilityModel>())->SetPosition(Vector(x, y, z));
+}
+
+NodeContainer
+LtuBaseStation::GetNode() {
+    return this->node;
 }
 
 }

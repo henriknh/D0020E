@@ -10,6 +10,7 @@ namespace ns3 {
 class LtuBaseStation : public SimpleRefCount<LtuBaseStation> {
 public:
     LtuBaseStation(double x, double y, double z);
+    NodeContainer GetNode();
 
 protected:
     NodeContainer node;
