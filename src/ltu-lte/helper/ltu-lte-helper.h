@@ -22,6 +22,8 @@ public:
     NodeContainer CreateUE(double x, double y, double z, double deltaX, double deltaY, double speed);
     void SetInternetNode(Ptr<Node> internetNode);
     void InstallAll(InternetStackHelper internet);
+    Ipv4Address GetUeIP(int index);
+    Ipv4Address GetInternetNodeIP();
 
 protected:
     LtuBaseStationContainer eNBs;
@@ -30,6 +32,8 @@ protected:
     Ptr<LteHelper> lteHelper;
     Ptr<PointToPointEpcHelper>  epcHelper;
     PointToPointHelper p2ph;
+    Ipv4InterfaceContainer ueIPs;
+    Ipv4Address internetNodeIP;
 };
 
 }

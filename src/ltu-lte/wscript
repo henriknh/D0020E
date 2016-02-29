@@ -10,9 +10,11 @@ def build(bld):
     module = bld.create_ns3_module('ltu-lte', ['core'])
     module.source = [
         'model/ltu-lte.cc',
-        'helper/ltu-lte-helper.cc',
-        'model/ltu-base-station.cc',
         'model/ltu-base-station-container.cc',
+        'model/ltu-base-station.cc',
+        'helper/ltu-lte-helper.cc',
+        'model/x2-connection.cc',
+        'model/x2-connection-container.cc'
         ]
 
     module_test = bld.create_ns3_module_test_library('ltu-lte')
@@ -24,9 +26,11 @@ def build(bld):
     headers.module = 'ltu-lte'
     headers.source = [
         'model/ltu-lte.h',
+        'model/ltu-base-station-container.h',
         'model/ltu-base-station.h',
         'helper/ltu-lte-helper.h',
-        'model/ltu-base-station-container.h',
+        'model/x2-connection.h',
+        'model/x2-connection-container.h'
         ]
 
     if bld.env.ENABLE_EXAMPLES:

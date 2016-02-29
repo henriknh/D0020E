@@ -1,6 +1,7 @@
 /* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 
 #include "ltu-base-station.h"
+#include "ltu-base-station-container.h"
 #include "ns3/log.h"
 #include "ns3/mobility-module.h"
 #include "ns3/node-container.h"
@@ -20,6 +21,17 @@ LtuBaseStation::LtuBaseStation(double x, double y, double z) {
 NodeContainer
 LtuBaseStation::GetNode() {
     return this->node;
+}
+
+void
+LtuBaseStation::Install() {
+    
+}
+
+void
+LtuBaseStation::ConnectBaseStationX2(Ptr<LtuBaseStation> baseStationToConnect)
+{
+    
 }
 
 }

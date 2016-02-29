@@ -81,6 +81,17 @@ LtuLteHelper::SetInternetNode(Ptr<Node> internetNode) {
     this->remoteHost = internetNode;
 }
 
+
+Ipv4Address
+LtuLteHelper::GetUeIP(int index) {
+    return this->ueIPs.GetAddress(index);
+}
+
+Ipv4Address
+LtuLteHelper::GetInternetNodeIP() {
+    return this->internetNodeIP;
+}
+
 void
 LtuLteHelper::InstallAll(InternetStackHelper internet) {
     //Connect external host to PDN Gateway (PGW)
@@ -93,7 +104,7 @@ LtuLteHelper::InstallAll(InternetStackHelper internet) {
     Ipv4AddressHelper ipv4h;
     ipv4h.SetBase ("1.0.0.0", "255.0.0.0");
     Ipv4InterfaceContainer internetIpIfaces = ipv4h.Assign (internetDevice);
-    //Ipv4Address remoteHostAddr = internetIpIfaces.GetAddress (1);
+    this->internetNodeIP = internetIpIfaces.GetAddress (1);
 
     Ipv4StaticRoutingHelper ipv4RoutingHelper;
     Ptr<Ipv4StaticRouting> remoteHostStaticRouting = ipv4RoutingHelper.GetStaticRouting (this->remoteHost->GetObject<Ipv4> ());
@@ -110,8 +121,7 @@ LtuLteHelper::InstallAll(InternetStackHelper internet) {
     
     //Set IP-addresses for UEs and install IP-stack
     internet.Install (this->UEs);
-    Ipv4InterfaceContainer ueIpIface;
-    ueIpIface = this->epcHelper->AssignUeIpv4Address (NetDeviceContainer (ueLteDevs));
+    this->ueIPs = this->epcHelper->AssignUeIpv4Address (NetDeviceContainer (ueLteDevs));
 
     //Set up default routes and gateway for all UEs
     int ueCount = this->UEs.GetN();
