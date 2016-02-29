@@ -24,6 +24,8 @@ public:
     void InstallAll(InternetStackHelper internet);
     Ipv4Address GetUeIP(int index);
     Ipv4Address GetInternetNodeIP();
+    Ptr<LtuBaseStation> GetENB(int index);
+    Ptr<Node> GetUE(int index);
 
 protected:
     LtuBaseStationContainer eNBs;
