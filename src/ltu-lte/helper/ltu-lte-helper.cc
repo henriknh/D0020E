@@ -21,6 +21,12 @@ LtuLteHelper::LtuLteHelper() {
     this->epcHelper = CreateObject<PointToPointEpcHelper> ();//Creates the whole EPC-middleware so we don't have to worry about that
     this->lteHelper->SetEpcHelper (this->epcHelper);
 
+    this->lteHelper->SetHandoverAlgorithmType ("ns3::A2A4RsrqHandoverAlgorithm");
+    this->lteHelper->SetHandoverAlgorithmAttribute ("ServingCellThreshold",
+                                                    UintegerValue (30));
+    this->lteHelper->SetHandoverAlgorithmAttribute ("NeighbourCellOffset",
+                                                    UintegerValue (1));
+
     this->p2ph.SetDeviceAttribute ("DataRate", DataRateValue (DataRate ("100Gb/s")));
     this->p2ph.SetDeviceAttribute ("Mtu", UintegerValue (1500));
     this->p2ph.SetChannelAttribute ("Delay", TimeValue (Seconds (0.010)));
@@ -92,6 +98,16 @@ LtuLteHelper::GetInternetNodeIP() {
     return this->internetNodeIP;
 }
 
+Ptr<LtuBaseStation>
+LtuLteHelper::GetENB(int index) {
+    return this->eNBs.Get(index);
+}
+
+Ptr<Node>
+LtuLteHelper::GetUE(int index) {
+    return this->UEs.Get(index);
+}
+
 void
 LtuLteHelper::InstallAll(InternetStackHelper internet) {
     //Connect external host to PDN Gateway (PGW)
@@ -114,6 +130,7 @@ LtuLteHelper::InstallAll(InternetStackHelper internet) {
     int eNBCount = this->eNBs.GetN();
     for(int i = 0; i < eNBCount; i++) {
         eNBNodes.Add(this->eNBs.Get(i)->GetNode());
+        //this->eNBs.Get(i)->Install(this->lteHelper);//Installs X2 interface used for handovers. EPC must be enabled before.
     }
 
     NetDeviceContainer enbLteDevs = this->lteHelper->InstallEnbDevice(eNBNodes);
@@ -134,7 +151,9 @@ LtuLteHelper::InstallAll(InternetStackHelper internet) {
     //Let all UEs auto attach using idle mode initial cell procedure
     this->lteHelper->Attach(ueLteDevs);
 
-    
+    for(int i = 0; i < eNBCount; i++) {
+        this->eNBs.Get(i)->Install(this->lteHelper);//Installs X2 interface used for handovers. EPC must be enabled before.
+    }
 }
 
 }

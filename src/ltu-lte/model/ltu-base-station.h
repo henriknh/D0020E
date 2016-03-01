@@ -4,6 +4,7 @@
 
 
 #include "ns3/node-container.h"
+#include "ns3/lte-module.h"
 #include "x2-connection-container.h"
 
 namespace ns3 {
@@ -12,8 +13,8 @@ class LtuBaseStation : public SimpleRefCount<LtuBaseStation> {
 public:
     LtuBaseStation(double x, double y, double z);
     NodeContainer GetNode();
-    void ConnectBaseStationX2(Ptr<LtuBaseStation> baseStationToConnect);
-    void Install();
+    void ConnectX2(Ptr<LtuBaseStation> baseStationToConnect);
+    void Install(Ptr<LteHelper> lteHelper);
 
 protected:
     NodeContainer node;
