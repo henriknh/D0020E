@@ -3,16 +3,19 @@
 #define LTU_TOPOLOGY_HELPER_H
 
 #include "ns3/ltu-topology.h"
-#include "ns3/ltu-wifi.h"
+#include "ns3/ltu-wifi-module.h"
+#include "ns3/ltu-wall-module.h"
 
 
 namespace ns3 {
 
 class LtuTopologyHelper{
 public:
-void createWifiTopology();
+    void createWifiTopology();
 
-
+protected:
+    LtuWifiHelper wifiHelper;
+    LtuWallHelper wallHelper;
 };
 
 }
