@@ -146,7 +146,64 @@ void LtuTopologyHelper::createWifiTopology(){
     this->wallHelper.CreateWall(24, 19, 24, 15); //66
     this->wallHelper.CreateWall(24, 15, 15, 15); //67	 
     this->wallHelper.CreateWall(15, 15, 15, -35); //68
-    this->wallHelper.CreateWall(2, 45, 12, 30); //69			
+    this->wallHelper.CreateWall(2, 45, 12, 30); //69
+    this->wallHelper.CreateWall(12, 30, 12, -35); // 70
+    this->wallHelper.CreateWall(-38, -37.5, 10, -37.5); // 71
+    this->wallHelper.CreateWall(-38, -37.5, -38, -36.5); // 72
+    this->wallHelper.CreateWall(-38, -36.5, 10, -36.5); // 73
+    this->wallHelper.CreateWall(10, -37.5, 10, -85); // 74
+    this->wallHelper.CreateWall(18.5, -37.5, 18.5, -85); // 75
+    this->wallHelper.CreateWall(18.5, -37.5, 100, -37.5); // 76
+    this->wallHelper.CreateWall(18.5, -36.5, 100, -36.5); // 77
+    this->wallHelper.CreateWall(100, -37.5, 100, -36.5); // 78
+    this->wallHelper.CreateWall(18.5, -85, 20, -89); // 79
+    this->wallHelper.CreateWall(20, -89, 36, -101); // 80
+    this->wallHelper.CreateWall(36, -101, 60, -92); // 81
+    this->wallHelper.CreateWall(60, -92, 60, -95); // 82
+    this->wallHelper.CreateWall(60, -95, 52, -98); // 83
+    this->wallHelper.CreateWall(52, -98, 58, -108); // 84
+    this->wallHelper.CreateWall(58, -107, 52, -110); // 85
+    this->wallHelper.CreateWall(52, -108, 50.5, -105); // 86
+    this->wallHelper.CreateWall(50.5, -105, 45, -107); // 87
+    this->wallHelper.CreateWall(49, -110, 45, -110); // 88
+    this->wallHelper.CreateWall(49, -110, 40, -104); // 89
+    this->wallHelper.CreateWall(40, -104.5, 35, -104.5); // 90
+    this->wallHelper.CreateWall(48, -97, 44, -101); // 91
+    this->wallHelper.CreateWall(48, -97.3, 49.5, -102.5); // 92
+    this->wallHelper.CreateWall(49.5, -101, 45, -105); // 93
+    this->wallHelper.CreateWall(44, -101, 45, -105); // 94
+    this->wallHelper.CreateWall(35, -104.5, 32, -115.3); // 95
+    this->wallHelper.CreateWall(32, -115.3, 20, -118); // 96
+    this->wallHelper.CreateWall(20, -118, -12, -95); // 97
+    this->wallHelper.CreateWall(-12, -95, -20, -95); // 98
+    this->wallHelper.CreateWall(-20, -95, -25, -100); // 99
+    this->wallHelper.CreateWall(-25, -100, -25, -110); // 100
+    this->wallHelper.CreateWall(-25, -110, -10, -114.5); // 101
+    this->wallHelper.CreateWall(-10, -114.5, -10, -115.5); // 102
+    this->wallHelper.CreateWall(-10, -115.5, -25, -112); // 103
+    this->wallHelper.CreateWall(-25, -112, -23.5, -95); // 104
+    this->wallHelper.CreateWall(-25.3, -95, -45, -91); // 105
+    this->wallHelper.CreateWall(-45, -91, -48.3, -96); // 106
+    this->wallHelper.CreateWall(-48.3, -96, -56.5, -96); // 107
+    this->wallHelper.CreateWall(-56.5, -96, -58, -105); // 108
+    this->wallHelper.CreateWall(-58, -105, -62, -105); // 109
+    this->wallHelper.CreateWall(-62, -105, -62, -88); // 110
+    this->wallHelper.CreateWall(-62, -88, -68, -80); // 111
+    this->wallHelper.CreateWall(-68, -80, -45, -48); // 112
+    this->wallHelper.CreateWall(-45, -48, -41, -48); // 113
+    this->wallHelper.CreateWall(-41, -48, -41, -48); // 114
+    this->wallHelper.CreateWall(-68, -80, -60, -85); // 115
+    this->wallHelper.CreateWall(-60, -85, -10, -93); // 116
+    this->wallHelper.CreateWall(-10, -93, 20, -115); // 117
+    this->wallHelper.CreateWall(20, -115, 30, -114); // 118
+    this->wallHelper.CreateWall(30, -114, 29, -100); // 119
+    this->wallHelper.CreateWall(29, -100, 3, -94); // 120
+    this->wallHelper.CreateWall(3, -94, 3, -90); // 121
+    this->wallHelper.CreateWall(3, -94, 10, -85); // 122
+    this->wallHelper.CreateWall(-55, -80, -90, -50); // 123
+    this->wallHelper.CreateWall(-90, -50, -50, -95); // 124
+    this->wallHelper.CreateWall(-50, -95, -55, -95); // 125
+    this->wallHelper.CreateWall(-55, -95, -55, -80); // 126		
 			
     this->wallHelper.InstallWalls();
     this->wifiHelper.InstallAll(this->wallHelper.GetLossModel());
