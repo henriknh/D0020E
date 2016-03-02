@@ -60,7 +60,7 @@ main (int argc, char *argv[])
     LogComponentEnable ("UdpEchoServerApplication", LOG_LEVEL_INFO);
   }
 
-  // Instanziate LtuWallHelper 
+  // Instantiate LtuWallHelper 
   LtuWallHelper wallhelper;
 
   
