@@ -13,7 +13,7 @@ public:
   ~LtuWallHelper ();
   Ptr<Wall> CreateWall(double x0, double y0, double x1, double y1);
   Ptr<Wall> GetWall(int i);
-  LtuWallContainer GetWallsContainer();
+  Ptr<LtuWallContainer> GetWallsContainer();
   int GetN(void);
   void InstallWalls();
   Ptr<HybridWallPropagationLossModel> GetLossModel();

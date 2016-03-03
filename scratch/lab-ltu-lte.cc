@@ -54,15 +54,15 @@ main (int argc, char *argv[])
 
   LtuLteHelper lte;
 
-  int width = 3;
-  int distance = 250;
-  int height = 3;
-  int currentIndex = 0;
+  //int width = 3;
+  //int distance = 250;
+  //int height = 3;
+  //int currentIndex = 0;
 
-  double top = -(distance * ((height - 1) / 2.0));
-  double left = -(distance * ((width - 1) / 2.0));
+  //double top = -(distance * ((height - 1) / 2.0));
+  //double left = -(distance * ((width - 1) / 2.0));
 
-  for(int h = 0; h < height; h++) {
+  /*for(int h = 0; h < height; h++) {
     for(int w = 0; w < width; w++) {
         Ptr<LtuBaseStation> eNB;
         eNB = lte.CreateENB(left + distance * w, top + distance * h, 1);
@@ -71,9 +71,9 @@ main (int argc, char *argv[])
         if(w > 0) {
             eNB->ConnectX2(lte.GetENB(currentIndex - 1));//Connect to base station to the left
 
-            /*if(h > 0) {
-                eNB->ConnectX2(lte.GetENB(currentIndex - 1 - width));//Connect diagonal
-            }*/
+            //if(h > 0) {
+            //    eNB->ConnectX2(lte.GetENB(currentIndex - 1 - width));//Connect diagonal
+            //}
         }
 
         if(h > 0) {
@@ -82,18 +82,21 @@ main (int argc, char *argv[])
 
         currentIndex++;
     }
-  }
-/*
-  lte.CreateENB(100, 0, 1);
-  lte.CreateENB(125, 50, 1);
-  lte.CreateENB(150, 75, 1);
+  }*/
+
+  LtuWallHelper walls;
+  walls.CreateWall(0, -100, 0, 100);
+
+  lte.CreateENB(-100, 0, 1);
+  lte.CreateENB(-50, 0, 1);
 
   lte.GetENB(0)->ConnectX2(lte.GetENB(1));
   //lte.GetENB(0)->ConnectX2(lte.GetENB(2));
-  lte.GetENB(1)->ConnectX2(lte.GetENB(2));*/
+  //lte.GetENB(1)->ConnectX2(lte.GetENB(2));
 
   NodeContainer ue;
-  ue = lte.CreateUE(0, 0, 1, distance * (height - 1), distance * (width - 1), 50.0);
+  ue = lte.CreateUE(0, 0, 1);
+  //ue = lte.CreateUE(0, 0, 1, distance * (height - 1), distance * (width - 1), 50.0);
 
   NodeContainer skyNet;
   skyNet.Create(1);
@@ -102,13 +105,13 @@ main (int argc, char *argv[])
   MobilityHelper mobility;
   mobility.SetMobilityModel ("ns3::ConstantPositionMobilityModel");
   mobility.Install(skyNet);
-  (skyNet.Get(0)->GetObject<ConstantPositionMobilityModel>())->SetPosition(Vector(100, -100, 1));
+  (skyNet.Get(0)->GetObject<ConstantPositionMobilityModel>())->SetPosition(Vector(0, -100, 1));
   
   InternetStackHelper internet;
   internet.Install(skyNet);    
 
   lte.SetInternetNode(skyNet.Get(0));
-  lte.InstallAll(internet);
+  lte.InstallAll(internet, walls.GetWallsContainer());
 
 
 

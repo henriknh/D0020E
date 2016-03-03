@@ -26,26 +26,12 @@
 #include "ns3/netanim-module.h"
 #include <iostream>
 
-//Wall
-#include <ns3/hybrid-wall-propagation-loss-model.h>
-#include <ns3/buildings-helper.h>
+//LTU Wall
+#include <ns3/ltu-wall-helper.h>
 
-
-
-
-#include "ns3/core-module.h"
-#include "ns3/network-module.h"
-#include "ns3/mobility-module.h"
-#include "ns3/config-store.h"
-#include <ns3/buildings-helper.h>
-#include <ns3/hybrid-buildings-propagation-loss-model.h>
-#include <ns3/hybrid-wall-propagation-loss-model.h>
-#include <ns3/constant-position-mobility-model.h>
+//LTU Wifi
 #include <ns3/ltu-wifi.h>
 
-#include <iomanip>
-#include <string>
-#include <vector>
 
 
 
@@ -65,34 +51,21 @@ main (int argc, char *argv[])
   cmd.Parse (argc,argv);
 
   if (verbose)
-    {
-      LogComponentEnable("LeifiTestar", LOG_LEVEL_INFO);
-      LogComponentEnable("WifiAccessPoint", LOG_LEVEL_INFO);
-      LogComponentEnable("WiredConnection", LOG_LEVEL_INFO);
-      LogComponentEnable("WiredConnectionContainer", LOG_LEVEL_INFO);
-      LogComponentEnable ("UdpEchoClientApplication", LOG_LEVEL_INFO);
-      LogComponentEnable ("UdpEchoServerApplication", LOG_LEVEL_INFO);
-    }
+  {
+    LogComponentEnable("LeifiTestar", LOG_LEVEL_INFO);
+    LogComponentEnable("WifiAccessPoint", LOG_LEVEL_INFO);
+    LogComponentEnable("WiredConnection", LOG_LEVEL_INFO);
+    LogComponentEnable("WiredConnectionContainer", LOG_LEVEL_INFO);
+    LogComponentEnable ("UdpEchoClientApplication", LOG_LEVEL_INFO);
+    LogComponentEnable ("UdpEchoServerApplication", LOG_LEVEL_INFO);
+  }
 
+  // Instanziate LtuWallHelper 
+  LtuWallHelper wallhelper;
 
-  // CREATE MUTTER WOOPING BUKLDING 
-  Ptr<Building> building1 = CreateObject<Building> ();
-  building1->SetBoundaries (Box (-100, 100, 5, 15, -200.0, 200));
-  building1->SetBuildingType (Building::Residential);
-  building1->SetExtWallsType (Building::ConcreteWithoutWindows);
-  building1->SetNFloors (1); //1 floor per every 4th height
+  wallhelper.CreateWall(0, 5, 100, 5);
 
-  // PROGATATION WALL LOSS MODEL LELELE
-  Ptr<MobilityBuildingInfo> mbuildingInfo = CreateObject<MobilityBuildingInfo> ();
-  Ptr<HybridWallPropagationLossModel> lossModel = CreateObject<HybridWallPropagationLossModel>();
-  lossModel->SetAttribute ("ShadowSigmaOutdoor", DoubleValue (7.0));
-  lossModel->SetAttribute ("ShadowSigmaIndoor", DoubleValue (10.0));
-  lossModel->SetAttribute ("ShadowSigmaExtWalls", DoubleValue (5.0));
-  
-  lossModel->SetAttribute ("Los2NlosThr", DoubleValue (1.0));
-
-
-
+  wallhelper.InstallWalls();
 
   LtuWifiHelper wifi;
   wifi.SetSsid("GruvNET");//Optional
@@ -105,8 +78,8 @@ main (int argc, char *argv[])
   NodeContainer wifiClients = wifi.CreateClient(25, 25, 1, 50, 50, 10);
   wifiClients.Add(wifi.CreateClient(100, 25, 1, 50, 50, 5));
 
-  wifi.InstallAll();//Without building
-  //wifi.InstallAll(lossModel);//With building
+  //wifi.InstallAll();//Without building
+  wifi.InstallAll(wallhelper.GetLossModel());//With wall
 
 
   Address dest;
@@ -118,7 +91,7 @@ main (int argc, char *argv[])
   onoff.SetConstantRate (DataRate ("500kb/s"));
   ApplicationContainer apps = onoff.Install (wifiClients.Get(0));
   apps.Start (Seconds (0.5));
-  apps.Stop (Seconds (19.5));
+  apps.Stop (Seconds (40.0));
 
   AnimationInterface anim ("wall-animation.xml");
 

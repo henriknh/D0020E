@@ -34,7 +34,8 @@ public:
   HybridWallPropagationLossModel ();
   ~HybridWallPropagationLossModel ();
   virtual double GetLoss (Ptr<MobilityModel> a, Ptr<MobilityModel> b) const;
-  void InstallWalls(LtuWallContainer *walls);
+  void InstallWalls(Ptr<LtuWallContainer> walls);
+  static TypeId GetTypeId (void);
 
 private: 
   double OkumuraHata (Ptr<MobilityModel> a, Ptr<MobilityModel> b) const;
@@ -52,7 +53,7 @@ private:
   double m_itu1411NlosThreshold; ///< in meters (switch Los -> NLoS)
   double m_rooftopHeight;
   double m_frequency;
-  LtuWallContainer *walls;
+  Ptr<LtuWallContainer> walls;
 
 };
 

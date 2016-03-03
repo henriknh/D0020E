@@ -11,9 +11,10 @@
 #include "ns3/internet-module.h"
 #include <string>
 #include <sstream>
+#include "ns3/ltu-wall-module.h"
+#include "ns3/buildings-helper.h"
 
 namespace ns3 {
-
 NS_LOG_COMPONENT_DEFINE ("LtuLteHelper");
 
 LtuLteHelper::LtuLteHelper() {
@@ -110,6 +111,20 @@ LtuLteHelper::GetUE(int index) {
 
 void
 LtuLteHelper::InstallAll(InternetStackHelper internet) {
+    InternalInstallAll(internet, 0, false);
+}
+
+void LtuLteHelper::InstallAll(InternetStackHelper internet, Ptr<LtuWallContainer> walls) {
+    InternalInstallAll(internet, walls, true);
+}
+
+void
+LtuLteHelper::InternalInstallAll(InternetStackHelper internet, Ptr<LtuWallContainer> walls, bool installWalls) {
+    if(installWalls) {
+        this->lteHelper->SetPathlossModelType("ns3::HybridWallPropagationLossModel");
+        this->lteHelper->SetPathlossModelAttribute("Walls", PointerValue(walls));
+    }
+
     //Connect external host to PDN Gateway (PGW)
     Ptr<Node> pgw = this->epcHelper->GetPgwNode ();
 
@@ -126,10 +141,14 @@ LtuLteHelper::InstallAll(InternetStackHelper internet) {
     Ptr<Ipv4StaticRouting> remoteHostStaticRouting = ipv4RoutingHelper.GetStaticRouting (this->remoteHost->GetObject<Ipv4> ());
     remoteHostStaticRouting->AddNetworkRouteTo (Ipv4Address ("7.0.0.0"), Ipv4Mask ("255.0.0.0"), 1);//Set route from remote host so that all traffic routed to 7.X.X.X goes into LTE-network
 
+    NodeContainer allNodes;
+    allNodes.Add(this->UEs);
+
     NodeContainer eNBNodes;
     int eNBCount = this->eNBs.GetN();
     for(int i = 0; i < eNBCount; i++) {
         eNBNodes.Add(this->eNBs.Get(i)->GetNode());
+        allNodes.Add(this->eNBs.Get(i)->GetNode());
         //this->eNBs.Get(i)->Install(this->lteHelper);//Installs X2 interface used for handovers. EPC must be enabled before.
     }
 
@@ -154,6 +173,23 @@ LtuLteHelper::InstallAll(InternetStackHelper internet) {
     for(int i = 0; i < eNBCount; i++) {
         this->eNBs.Get(i)->Install(this->lteHelper);//Installs X2 interface used for handovers. EPC must be enabled before.
     }
+
+    if(installWalls) {
+        BuildingsHelper building;
+        building.Install(allNodes);
+    }
+
+    /*if(lossModel != 0) {
+        //Get spectrum channel and call AddPropagationLossModel
+        int ueDevsCount = ueLteDevs.GetN();
+        int enbDevsCount = enbLteDevs.GetN();
+        for(int i = 0; i < ueDevsCount; i++) {
+            Ptr<MultiModelSpectrumChannel> channel = Ptr((MultiModelSpectrumChannel)(ueLteDevs.Get(i)->GetChannel()*));
+            if(channel != 0) {
+                channel->AddPropagationLossModel(lossModel);
+            }
+        }
+    }*/
 }
 
 }

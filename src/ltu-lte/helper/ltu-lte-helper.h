@@ -8,6 +8,7 @@
 #include "ns3/ltu-base-station-container.h"
 #include "ns3/internet-module.h"
 #include "ns3/point-to-point-helper.h"
+#include "ns3/ltu-wall-module.h"
 
 namespace ns3 {
 
@@ -22,6 +23,7 @@ public:
     NodeContainer CreateUE(double x, double y, double z, double deltaX, double deltaY, double speed);
     void SetInternetNode(Ptr<Node> internetNode);
     void InstallAll(InternetStackHelper internet);
+    void InstallAll(InternetStackHelper internet, Ptr<LtuWallContainer> walls);
     Ipv4Address GetUeIP(int index);
     Ipv4Address GetInternetNodeIP();
     Ptr<LtuBaseStation> GetENB(int index);
@@ -36,6 +38,7 @@ protected:
     PointToPointHelper p2ph;
     Ipv4InterfaceContainer ueIPs;
     Ipv4Address internetNodeIP;
+    void InternalInstallAll(InternetStackHelper internet, Ptr<LtuWallContainer> walls, bool installWalls);
 };
 
 }

@@ -43,10 +43,12 @@ LtuWallHelper::GetWall(int i)
 }
 
 
-LtuWallContainer
+Ptr<LtuWallContainer>
 LtuWallHelper::GetWallsContainer()
 {
-  return walls;
+  Ptr<LtuWallContainer> wallsPointer;
+  wallsPointer = Ptr<LtuWallContainer>(&this->walls);
+  return wallsPointer;
 }
 
 int
@@ -58,7 +60,9 @@ LtuWallHelper::GetN(void)
 void
 LtuWallHelper::InstallWalls()
 {
-  this->propagationLossModel->InstallWalls(&this->walls);
+  Ptr<LtuWallContainer> wallsPointer;
+  wallsPointer = Ptr<LtuWallContainer>(&this->walls);
+  this->propagationLossModel->InstallWalls(wallsPointer);
 }
 
 Ptr<HybridWallPropagationLossModel> 

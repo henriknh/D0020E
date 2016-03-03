@@ -26,6 +26,26 @@ HybridWallPropagationLossModel::HybridWallPropagationLossModel ()
 }
 HybridWallPropagationLossModel::~HybridWallPropagationLossModel () {}
 
+TypeId
+HybridWallPropagationLossModel::GetTypeId (void)
+{
+  static TypeId tid = TypeId ("ns3::HybridWallPropagationLossModel")
+
+    .SetParent<HybridBuildingsPropagationLossModel> ()
+    .AddConstructor<HybridWallPropagationLossModel> ()
+    .SetGroupName ("Buildings")
+
+
+    .AddAttribute ("Walls",
+                   "Test TODO: Change",
+                   PointerValue(0),
+                   MakePointerAccessor(&HybridWallPropagationLossModel::walls),
+                   MakePointerChecker<LtuWallContainer> ());
+
+
+  return tid;
+}
+
 double HybridWallPropagationLossModel::GetLoss (Ptr<MobilityModel> a, Ptr<MobilityModel> b) const
 { 
   Ptr<Wall> w;
@@ -54,14 +74,14 @@ double HybridWallPropagationLossModel::GetLoss (Ptr<MobilityModel> a, Ptr<Mobili
 
 
 
-  NS_ASSERT_MSG ((a->GetPosition ().z >= 0) && (b->GetPosition ().z >= 0), "HybridBuildingsPropagationLossModel does not support underground nodes (placed at z < 0)");
+  NS_ASSERT_MSG ((a->GetPosition ().z >= 0) && (b->GetPosition ().z >= 0), "HybridWallPropagationLossModel does not support underground nodes (placed at z < 0)");
  
   double distance = a->GetDistanceFrom (b);
 
   // get the MobilityBuildingInfo pointers
   Ptr<MobilityBuildingInfo> a1 = a->GetObject<MobilityBuildingInfo> ();
   Ptr<MobilityBuildingInfo> b1 = b->GetObject<MobilityBuildingInfo> ();
-  NS_ASSERT_MSG ((a1 != 0) && (b1 != 0), "HybridBuildingsPropagationLossModel only works with MobilityBuildingInfo");
+  NS_ASSERT_MSG ((a1 != 0) && (b1 != 0), "HybridWallPropagationLossModel only works with MobilityBuildingInfo");
 
   double loss = 0.0;
 
@@ -229,7 +249,7 @@ HybridWallPropagationLossModel::get_wall_intersection(double p0_x, double p0_y, 
 }
 
 void
-HybridWallPropagationLossModel::InstallWalls(LtuWallContainer *walls)
+HybridWallPropagationLossModel::InstallWalls(Ptr<LtuWallContainer> walls)
 {
   this->walls = walls;
 }

@@ -7,6 +7,13 @@ namespace ns3 {
 
 LtuWallContainer::LtuWallContainer() {}
 
+TypeId
+LtuWallContainer::GetTypeId (void)
+{
+  static TypeId tid = TypeId ("ns3::LtuWallContainer");
+  return tid;
+}
+
 uint32_t 
 LtuWallContainer::GetN (void) const
 {
