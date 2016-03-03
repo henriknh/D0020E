@@ -60,10 +60,11 @@ main (int argc, char *argv[])
     LogComponentEnable ("UdpEchoServerApplication", LOG_LEVEL_INFO);
   }
 
-  // Instanziate LtuWallHelper 
+  // Instantiate LtuWallHelper 
   LtuWallHelper wallhelper;
 
-  wallhelper.CreateWall(0, 5, 100, 5);
+  
+  wallhelper.CreateWall(-100, 5, 100, 5);
 
   wallhelper.InstallWalls();
 
@@ -91,7 +92,7 @@ main (int argc, char *argv[])
   onoff.SetConstantRate (DataRate ("500kb/s"));
   ApplicationContainer apps = onoff.Install (wifiClients.Get(0));
   apps.Start (Seconds (0.5));
-  apps.Stop (Seconds (40.0));
+  apps.Stop (Seconds (19.5));
 
   AnimationInterface anim ("wall-animation.xml");
 
