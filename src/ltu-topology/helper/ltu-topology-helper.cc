@@ -7,13 +7,8 @@
 namespace ns3 {
 
 void LtuTopologyHelper::createWifiTopology(){
-    //7 < 4 < 3 < 1 < 2
-    //7 < 5 < 6
-    //7 < 8 < 9 < 12 < 13 < 16
-    //8 < 10 < 11 < 15 < 20 < 24 < 23 < 19 < 18 < 17
-    //15 < 14
-    //20 < 21
-    //19 < 22
+    
+    //Below all the access points are created with given coordinates.
     this->wifiHelper.CreateAccessPoint(-53.3, 97.5, 1);//AP= 1 Index = AP-1
     this->wifiHelper.CreateAccessPoint(-42.5, 95, 1);//2
     this->wifiHelper.CreateAccessPoint(-57.5, 75, 1);//3
@@ -39,6 +34,17 @@ void LtuTopologyHelper::createWifiTopology(){
     this->wifiHelper.CreateAccessPoint(0, -102.5, 1);//23
     this->wifiHelper.CreateAccessPoint(27.5, -117.5, 1);//24
 
+
+
+    //Below the connections between Access points(AP) is shown. 
+    //The first row shows that AP 2 is connected to AP 1 and so on. '
+    //7 < 4 < 3 < 1 < 2
+    //7 < 5 < 6
+    //7 < 8 < 9 < 12 < 13 < 16
+    //8 < 10 < 11 < 15 < 20 < 24 < 23 < 19 < 18 < 17
+    //15 < 14
+    //20 < 21
+    //19 < 22
     //Connecting 7 < 4 < 3 < 1 < 2
     this->wifiHelper.GetAP(3)->ConnectWired(this->wifiHelper.GetAP(6)); //AP 7<4
     this->wifiHelper.GetAP(2)->ConnectWired(this->wifiHelper.GetAP(3));//AP 4<3
@@ -77,7 +83,7 @@ void LtuTopologyHelper::createWifiTopology(){
     this->wifiHelper.GetAP(21)->ConnectWired(this->wifiHelper.GetAP(18)); //AP 19 < 22
 
 
-    //1 -69
+    //Below all the walls are created with given coordinates.
     this->wallHelper.CreateWall(-100, 75, -47.5, 52.5); //1 
     this->wallHelper.CreateWall(-100, 80, -54, 60); //2
     this->wallHelper.CreateWall(-55, 72.5, -52.5, 60); //3
