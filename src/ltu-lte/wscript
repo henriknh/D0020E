@@ -9,7 +9,6 @@
 def build(bld):
     module = bld.create_ns3_module('ltu-lte', ['core'])
     module.source = [
-        'model/ltu-lte.cc',
         'model/ltu-base-station-container.cc',
         'model/ltu-base-station.cc',
         'helper/ltu-lte-helper.cc',
@@ -25,7 +24,6 @@ def build(bld):
     headers = bld(features='ns3header')
     headers.module = 'ltu-lte'
     headers.source = [
-        'model/ltu-lte.h',
         'model/ltu-base-station-container.h',
         'model/ltu-base-station.h',
         'helper/ltu-lte-helper.h',
