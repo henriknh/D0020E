@@ -2,5 +2,10 @@
 
 def build(bld):
     obj = bld.create_ns3_program('ltu-wifi-example', ['ltu-wifi'])
-    obj.source = 'ltu-wifi-example.cc'
+    obj.source = [
+        'ltu-wifi-example.cc',
+        'simple-ltu-wifi-example.cc',
+        'ltu-wifi-with-wall.cc',
+        'complex-ltu-wifi-topology-example.cc'
+        ]
 
