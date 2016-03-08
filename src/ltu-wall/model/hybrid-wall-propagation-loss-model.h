@@ -28,32 +28,75 @@
 
 namespace ns3 {
 
+/**
+ * \brief LossModel to calculate signal loss between 2 points.
+ * 
+ * Extends HybridBuildingsPropagationLossModel. Modified GetLoss-function 
+ * to calculate if 2 points intersect a wall. Function get_wall_intersection 
+ * does that calculation. GetLoss return loss.
+ */
+
 class HybridWallPropagationLossModel : public HybridBuildingsPropagationLossModel
 {
 public:
-  HybridWallPropagationLossModel ();
-  ~HybridWallPropagationLossModel ();
-  virtual double GetLoss (Ptr<MobilityModel> a, Ptr<MobilityModel> b) const;
-  void InstallWalls(Ptr<LtuWallContainer> walls);
-  static TypeId GetTypeId (void);
+
+HybridWallPropagationLossModel ();
+
+~HybridWallPropagationLossModel ();
+
+
+/**
+ * Calculates the loss between 2 points. Change from 
+ * HybridBuildingPropgationLossModel is that first check if the 
+ * 2 points intersect/collide with a wall. If it intersect a 
+ * high number if returned representing that the signal is lost 
+ * completely. If no wall intersected the function continue to 
+ * run as normal. Just like the original function in HBPLM.
+ *
+ * \param 2 MobilityModel
+ *
+ * \return loss
+ */
+virtual double GetLoss (Ptr<MobilityModel> a, Ptr<MobilityModel> b) const;
+
+
+/**
+ * Copies NS3 SmartPointer of LtuWallContainer to variable walls 
+ * for easy access in GetLess-function.
+ *
+ * \param NS3 SmartPointer of LtuWallContainer
+ */
+void InstallWalls(Ptr<LtuWallContainer> walls);
+
+
+static TypeId GetTypeId (void);
 
 private: 
-  double OkumuraHata (Ptr<MobilityModel> a, Ptr<MobilityModel> b) const;
-  double ItuR1411 (Ptr<MobilityModel> a, Ptr<MobilityModel> b) const;
-  double ItuR1238 (Ptr<MobilityModel> a, Ptr<MobilityModel> b) const;
-  char get_wall_intersection(double p0_x, double p0_y, double p1_x, double p1_y, 
-    double p2_x, double p2_y, double p3_x, double p3_y) const;
+double OkumuraHata (Ptr<MobilityModel> a, Ptr<MobilityModel> b) const;
+double ItuR1411 (Ptr<MobilityModel> a, Ptr<MobilityModel> b) const;
+double ItuR1238 (Ptr<MobilityModel> a, Ptr<MobilityModel> b) const;
 
-  Ptr<OkumuraHataPropagationLossModel> m_okumuraHata;
-  Ptr<ItuR1411LosPropagationLossModel> m_ituR1411Los;
-  Ptr<ItuR1411NlosOverRooftopPropagationLossModel> m_ituR1411NlosOverRooftop;
-  Ptr<ItuR1238PropagationLossModel> m_ituR1238;
-  Ptr<Kun2600MhzPropagationLossModel> m_kun2600Mhz;
 
-  double m_itu1411NlosThreshold; ///< in meters (switch Los -> NLoS)
-  double m_rooftopHeight;
-  double m_frequency;
-  Ptr<LtuWallContainer> walls;
+/**
+ * Check if the line of 2 first points intersect/collide with the line of 2 last points.
+ *
+ * \param 4 coordinates.
+ *
+ * \return 1 if collision otherwise 0
+ */
+char get_wall_intersection(double p0_x, double p0_y, double p1_x, double p1_y, 
+double p2_x, double p2_y, double p3_x, double p3_y) const;
+
+Ptr<OkumuraHataPropagationLossModel> m_okumuraHata;
+Ptr<ItuR1411LosPropagationLossModel> m_ituR1411Los;
+Ptr<ItuR1411NlosOverRooftopPropagationLossModel> m_ituR1411NlosOverRooftop;
+Ptr<ItuR1238PropagationLossModel> m_ituR1238;
+Ptr<Kun2600MhzPropagationLossModel> m_kun2600Mhz;
+
+double m_itu1411NlosThreshold; ///< in meters (switch Los -> NLoS)
+double m_rooftopHeight;
+double m_frequency;
+Ptr<LtuWallContainer> walls;
 
 };
 
