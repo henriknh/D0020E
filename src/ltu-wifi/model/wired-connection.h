@@ -6,13 +6,30 @@
 
 namespace ns3 {
 
+/**
+    Represents a wired connection between two nodes. The class is used to ensure that a single connection is only installed once. This makes is easier to just loop over all nodes and run Install for each node.
+*/
 class WiredConnection : public SimpleRefCount<WiredConnection> {
 public:
+    /**
+        Instantiates a connection between the two nodes.
+    */
     WiredConnection(Ptr<Node> firstNode, Ptr<Node> secondNode);
-    void Connect();//TODO: Probably needs some arguments
+
+    /**
+        Installs the connection
+    */
+    void Connect();
 
 protected:
+    /**
+        Internal storage for nodes
+    */
 	NodeContainer nodes;
+    
+    /**
+        Used to just install the connection once
+    */
 	bool isConnected;
 };
 

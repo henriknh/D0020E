@@ -8,6 +8,9 @@
 
 
 namespace ns3 {
+/*!
+*\brief CreateWifiTopology creates a topology with access points and walls at coordinates according to the map which is found in the appendix.
+*/
 
 class LtuTopologyHelper{
 public:

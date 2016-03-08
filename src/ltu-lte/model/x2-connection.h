@@ -7,9 +7,19 @@
 
 namespace ns3 {
 
+/**
+    Class which represents a connection between two base stations using the X2-interface used for LTE handover. Ensures that the connection is only installed once.
+*/
 class X2Connection : public SimpleRefCount<X2Connection> {
 public:
+    /**
+        Instantiates a new connection between the two supplied nodes
+    */
     X2Connection(Ptr<Node> firstNode, Ptr<Node> secondNode);
+
+    /**
+        Installs the connection
+    */
     void Connect(Ptr<LteHelper> lteHelper);
 
 protected:
