@@ -37,7 +37,7 @@ HybridWallPropagationLossModel::GetTypeId (void)
 
 
     .AddAttribute ("Walls",
-                   "Test TODO: Change",
+                   "Container of walls used in GetLoss()",
                    PointerValue(0),
                    MakePointerAccessor(&HybridWallPropagationLossModel::walls),
                    MakePointerChecker<LtuWallContainer> ());
