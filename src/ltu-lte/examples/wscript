@@ -1,6 +1,9 @@
 # -*- Mode: python; py-indent-offset: 4; indent-tabs-mode: nil; coding: utf-8; -*-
 
 def build(bld):
-    obj = bld.create_ns3_program('ltu-lte-example', ['ltu-lte'])
-    obj.source = 'ltu-lte-example.cc'
+    obj = bld.create_ns3_program('lte-row-column-topology', ['ltu-lte'])
+    obj.source = 'ltu-lte-row-column-topology-example.cc'
+
+    obj = bld.create_ns3_program('lte-wall', ['ltu-lte'])
+    obj.source = 'ltu-lte-wall-example.cc'
 

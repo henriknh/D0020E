@@ -4,3 +4,8 @@ def build(bld):
     obj = bld.create_ns3_program('ltu-wifi-example', ['ltu-wifi'])
     obj.source = 'ltu-wifi-example.cc'
 
+    obj = bld.create_ns3_program('ltu-wifi-complex', ['ltu-wifi'])
+    obj.source = 'complex-ltu-wifi-topology-example.cc'
+
+    obj = bld.create_ns3_program('ltu-wifi-simple', ['ltu-wifi'])
+    obj.source = 'simple-ltu-wifi-example.cc'
