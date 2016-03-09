@@ -65,7 +65,7 @@ main (int argc, char *argv[])
 
   if (verbose)
   {
-    LogComponentEnable("LeifiTestar", LOG_LEVEL_INFO);
+    LogComponentEnable("Test_wifi_wall", LOG_LEVEL_INFO);
     LogComponentEnable("WifiAccessPoint", LOG_LEVEL_INFO);
     LogComponentEnable("WiredConnection", LOG_LEVEL_INFO);
     LogComponentEnable("WiredConnectionContainer", LOG_LEVEL_INFO);
